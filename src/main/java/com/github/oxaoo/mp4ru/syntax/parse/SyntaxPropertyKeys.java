@@ -1,7 +1,7 @@
 package com.github.oxaoo.mp4ru.syntax.parse;
 
 
-import static com.github.oxaoo.mp4ru.GlobalPropertyKeys.CONLL_TEXT_FILE;
+import static com.github.oxaoo.mp4ru.syntax.GlobalPropertyKeys.CONLL_TEXT_FILE;
 
 /**
  * Property keys for syntax analyzer.

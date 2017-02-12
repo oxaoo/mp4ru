@@ -5,8 +5,6 @@ import com.github.oxaoo.mp4ru.exceptions.FailedStoreTokensException;
 import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.github.oxaoo.mp4ru.GlobalPropertyKeys.CONLL_TEXT_FILE;
+import static com.github.oxaoo.mp4ru.syntax.GlobalPropertyKeys.CONLL_TEXT_FILE;
 
 
 /**

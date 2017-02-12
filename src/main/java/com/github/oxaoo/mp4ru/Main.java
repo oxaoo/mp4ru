@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             new RussianParser().parsing();
-            LOG.warn("Successful parsing!");
+            LOG.info("Successful parsing!");
         } catch (FailedParsingException e) {
             LOG.error("Exception during parsing. Cause: " + e.getMessage());
             e.printStackTrace();

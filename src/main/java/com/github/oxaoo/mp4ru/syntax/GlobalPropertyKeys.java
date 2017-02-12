@@ -1,4 +1,4 @@
-package com.github.oxaoo.mp4ru;
+package com.github.oxaoo.mp4ru.syntax;
 
 /**
  * @author Alexander Kuleshov
