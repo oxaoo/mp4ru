@@ -1,5 +1,8 @@
 package com.github.oxaoo.mp4ru.syntax.tagging;
 
+import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
+import com.github.oxaoo.mp4ru.exceptions.FailedStoreTokensException;
+import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 import org.slf4j.Logger;
@@ -22,8 +25,8 @@ import static com.github.oxaoo.mp4ru.GlobalPropertyKeys.CONLL_TEXT_FILE;
  * @since 12.02.2017
  */
 public class PosTagger {
-    private static final Logger LOG = LoggerFactory.getLogger(PosTagger.class);
     private static final String DEFAULT_MODEL_FILE = "src/main/resources/russian-utf8.par";
+
     static {
         System.setProperty("treetagger.home", "src/main/resources/TreeTagger");
     }
@@ -43,24 +46,28 @@ public class PosTagger {
      *
      * @param tokens the list of tokens
      * @return the list of processed tokens in CoNLL format
-     * @throws IOException         throw if classifier's model isn't found
-     * @throws TreeTaggerException throw if there are incorrect tokens
+     * @throws ClassifierModelNotFoundException throw if classifier's model isn't found
+     * @throws IncorrectTokenException          throw if there are incorrect tokens
      */
-    public List<Conll> tagging(List<String> tokens) throws IOException, TreeTaggerException {
+    public List<Conll> tagging(List<String> tokens) throws ClassifierModelNotFoundException, IncorrectTokenException {
         TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
         AdvancedTokenHandler<Conll> tokenHandler = new StatefulTokenHandler();
         try {
             tt.setModel(this.modelFilePath);
             tt.setHandler(tokenHandler);
             tt.process(tokens);
+        } catch (IOException e) {
+            throw new ClassifierModelNotFoundException("The classifier's model \'"
+                    + this.modelFilePath + "\' isn't found.", e);
+        } catch (TreeTaggerException e) {
+            throw new IncorrectTokenException("There is an incorrect token.", e);
         } finally {
             tt.destroy();
         }
-
         return tokenHandler.getTokens();
     }
 
-    public void writeTokens(List<Conll> tokens) {
+    public void writeTokens(List<Conll> tokens) throws FailedStoreTokensException {
         File file = new File(CONLL_TEXT_FILE);
         try {
             if (!file.exists()) {
@@ -75,7 +82,7 @@ public class PosTagger {
             }
             bw.close();
         } catch (IOException e) {
-            LOG.error("Failed to write the tokens to file [{}]", e.toString());
+            throw new FailedStoreTokensException("Failed to write the tokens to file \'" + CONLL_TEXT_FILE + "\'.", e);
         }
     }
 }

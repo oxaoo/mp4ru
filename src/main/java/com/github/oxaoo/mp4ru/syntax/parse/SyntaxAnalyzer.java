@@ -1,5 +1,7 @@
 package com.github.oxaoo.mp4ru.syntax.parse;
 
+import com.github.oxaoo.mp4ru.exceptions.FailedInitSyntaxAnalyzerException;
+import com.github.oxaoo.mp4ru.exceptions.FailedSyntaxAnalysisException;
 import org.maltparser.MaltParserService;
 import org.maltparser.core.exception.MaltChainedException;
 import org.slf4j.Logger;
@@ -13,12 +15,14 @@ import org.slf4j.LoggerFactory;
  * @since 12.02.2017
  */
 public class SyntaxAnalyzer {
-    private static final Logger LOG = LoggerFactory.getLogger(SyntaxAnalyzer.class);
-
     private final MaltParserService maltParserService;
 
-    public SyntaxAnalyzer() throws MaltChainedException {
-        this.maltParserService = new MaltParserService(SyntaxPropertyKeys.OPTION_CONTAINER);
+    public SyntaxAnalyzer() throws FailedInitSyntaxAnalyzerException {
+        try {
+            this.maltParserService = new MaltParserService(SyntaxPropertyKeys.OPTION_CONTAINER);
+        } catch (MaltChainedException e) {
+            throw new FailedInitSyntaxAnalyzerException("Failed to initialize the syntax analyzer.", e);
+        }
     }
 
     /**
@@ -26,20 +30,17 @@ public class SyntaxAnalyzer {
      *
      * @return <tt>true</tt> if analyze is successful
      */
-    public boolean analyze() {
+    public boolean analyze() throws FailedSyntaxAnalysisException {
         final String command = SyntaxPropertyKeys.CONFIG_WORKINGDIR_PATH
                 + SyntaxPropertyKeys.CONFIG_NAME_MODEL
                 + SyntaxPropertyKeys.INPUT_INFILE_PATH
                 + SyntaxPropertyKeys.OUTPUT_OUTFILE_PATH
                 + SyntaxPropertyKeys.CONFIG_FLOWCHART_PARSE;
-
         try {
             this.maltParserService.runExperiment(command.trim());
+            return true;
         } catch (MaltChainedException e) {
-            LOG.error("Failed to syntax analyze: [{}]", e.toString());
-            e.printStackTrace();
-            return false;
+            throw new FailedSyntaxAnalysisException("Failed to syntax analysis.", e);
         }
-        return true;
     }
 }
