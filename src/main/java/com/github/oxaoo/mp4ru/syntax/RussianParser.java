@@ -6,6 +6,8 @@ import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
 import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,13 +17,14 @@ import java.util.List;
  * @since 12.02.2017
  */
 public class RussianParser {
+    private static final Logger LOG = LoggerFactory.getLogger(RussianParser.class);
 
     public RussianParser() {
     }
 
-    public void parsing() throws FailedParsingException {
+    public void parsing(String textFilePath, String classifierModel) throws FailedParsingException {
         try {
-            this.start();
+            this.execute(textFilePath, classifierModel);
         } catch (ReadInputTextException
                 | IncorrectTokenException
                 | FailedStoreTokensException
@@ -32,7 +35,7 @@ public class RussianParser {
         }
     }
 
-    private void start() throws ReadInputTextException,
+    private void execute(String textFilePath, String classifierModel) throws ReadInputTextException,
             IncorrectTokenException,
             ClassifierModelNotFoundException,
             FailedStoreTokensException,
@@ -40,13 +43,15 @@ public class RussianParser {
             FailedSyntaxAnalysisException {
 
         //tokenization.
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer(textFilePath);
         List<String> tokens = tokenizer.tokenization();
+        LOG.info("Tokens: {}", tokens);
 
         //morphological analyze.
-        PosTagger tagger = new PosTagger();
+        PosTagger tagger = new PosTagger(classifierModel);
         List<Conll> taggingTokens = tagger.tagging(tokens);
         tagger.writeTokens(taggingTokens);
+        LOG.info("Tagging tokens: {}", taggingTokens);
 
         //syntactic analyze.
         SyntaxAnalyzer analyzer = new SyntaxAnalyzer();
