@@ -13,8 +13,16 @@ public class Main {
     @Parameter(names = {"-tf", "--textFile"}, description = "The path to the text file")
     public String textFilePath;
 
-    @Parameter(names = {"-cm", "--classifierModel"}, description = "The path to the classifier model")
+    @Parameter(names = {"-cm", "--classifierModel"},
+            description = "The path to the classifier model of morphological analysis")
     public String classifierModel;
+
+    @Parameter(names = {"-tt", "--TreeTagger"},
+            description = "The path to the home directory of TreeTagger executor. It must located in '*/bin/' directory")
+    public String treeTaggerHome;
+
+    @Parameter(names = {"-pc", "--ParserConfig"}, description = "The path to the home directory of parser configuration")
+    public String parserConfig;
 
     @Parameter(names = {"-h", "--help"}, description = "Information on use of mp4ru", help = true)
     public boolean help = false;
@@ -31,14 +39,17 @@ public class Main {
     }
 
     private void run() {
-        if (textFilePath == null || classifierModel == null) {
+        if (textFilePath == null || classifierModel == null || treeTaggerHome == null || parserConfig == null) {
             LOG.error("Missing required parameters.");
             return;
         }
 
+        String dir = System.getProperty("user.dir");
+        LOG.debug("Current dir: " + dir);
+
         try {
-            new RussianParser().parsing(textFilePath, classifierModel);
-            LOG.info("Successful parsing!");
+            String resultParseFile = new RussianParser().parsing(textFilePath, classifierModel, treeTaggerHome, parserConfig);
+            LOG.info("Successful parsing! The result of parsing is presented in the {} file.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parsing. Cause: " + e.getMessage());
             e.printStackTrace();

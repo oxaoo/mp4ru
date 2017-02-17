@@ -16,13 +16,17 @@ import org.slf4j.LoggerFactory;
  */
 public class SyntaxAnalyzer {
     private final MaltParserService maltParserService;
+    private final String parserConfigDirectory;
+    private final String parseFilePath;
 
-    public SyntaxAnalyzer() throws FailedInitSyntaxAnalyzerException {
+    public SyntaxAnalyzer(String parserConfig, String parseFilePath) throws FailedInitSyntaxAnalyzerException {
         try {
             this.maltParserService = new MaltParserService(SyntaxPropertyKeys.OPTION_CONTAINER);
         } catch (MaltChainedException e) {
             throw new FailedInitSyntaxAnalyzerException("Failed to initialize the syntax analyzer.", e);
         }
+        this.parserConfigDirectory = SyntaxPropertyKeys.CONFIG_WORKINGDIR_KEY + parserConfig;
+        this.parseFilePath = SyntaxPropertyKeys.OUTPUT_OUTFILE_KEY + parseFilePath;
     }
 
     /**
@@ -31,10 +35,10 @@ public class SyntaxAnalyzer {
      * @return <tt>true</tt> if analyze is successful
      */
     public boolean analyze() throws FailedSyntaxAnalysisException {
-        final String command = SyntaxPropertyKeys.CONFIG_WORKINGDIR_PATH
+        final String command = this.parserConfigDirectory
                 + SyntaxPropertyKeys.CONFIG_NAME_MODEL
                 + SyntaxPropertyKeys.INPUT_INFILE_PATH
-                + SyntaxPropertyKeys.OUTPUT_OUTFILE_PATH
+                + this.parseFilePath
                 + SyntaxPropertyKeys.CONFIG_FLOWCHART_PARSE;
         try {
             this.maltParserService.runExperiment(command.trim());

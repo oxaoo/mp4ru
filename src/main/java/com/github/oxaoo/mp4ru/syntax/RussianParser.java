@@ -6,6 +6,7 @@ import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
 import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
+import com.github.oxaoo.mp4ru.ulils.SyntaxUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,12 +20,16 @@ import java.util.List;
 public class RussianParser {
     private static final Logger LOG = LoggerFactory.getLogger(RussianParser.class);
 
+    private final SyntaxUtils utils;
+
     public RussianParser() {
+        utils = new SyntaxUtils();
     }
 
-    public void parsing(String textFilePath, String classifierModel) throws FailedParsingException {
+    public String parsing(String textFilePath, String classifierModel, String treeTaggerHome, String parserConfig)
+            throws FailedParsingException {
         try {
-            this.execute(textFilePath, classifierModel);
+            return this.execute(textFilePath, classifierModel, treeTaggerHome, parserConfig);
         } catch (ReadInputTextException
                 | IncorrectTokenException
                 | FailedStoreTokensException
@@ -32,10 +37,13 @@ public class RussianParser {
                 | FailedInitSyntaxAnalyzerException
                 | FailedSyntaxAnalysisException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
+        } finally {
+            this.utils.removeTemporaryFiles();
         }
     }
 
-    private void execute(String textFilePath, String classifierModel) throws ReadInputTextException,
+    private String execute(String textFilePath, String classifierModel, String treeTaggerHome, String parserConfig)
+            throws ReadInputTextException,
             IncorrectTokenException,
             ClassifierModelNotFoundException,
             FailedStoreTokensException,
@@ -43,18 +51,26 @@ public class RussianParser {
             FailedSyntaxAnalysisException {
 
         //tokenization.
+        LOG.info("Tokenization...");
         Tokenizer tokenizer = new SimpleTokenizer(textFilePath);
         List<String> tokens = tokenizer.tokenization();
-        LOG.info("Tokens: {}", tokens);
+        LOG.debug("Tokens: {}", tokens);
 
         //morphological analyze.
-        PosTagger tagger = new PosTagger(classifierModel);
+        LOG.info("Tagging...");
+        PosTagger tagger = new PosTagger(classifierModel, treeTaggerHome);
         List<Conll> taggingTokens = tagger.tagging(tokens);
         tagger.writeTokens(taggingTokens);
-        LOG.info("Tagging tokens: {}", taggingTokens);
+        LOG.debug("Tagging tokens: {}", taggingTokens);
+
+        //prepare...
+        String parseFilePath = this.utils.makeParseFilePath(textFilePath);
 
         //syntactic analyze.
-        SyntaxAnalyzer analyzer = new SyntaxAnalyzer();
+        LOG.info("Parsing...");
+        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig, parseFilePath);
         analyzer.analyze();
+
+        return parseFilePath;
     }
 }
