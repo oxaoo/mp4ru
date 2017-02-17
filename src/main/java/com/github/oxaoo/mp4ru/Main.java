@@ -17,14 +17,20 @@ public class Main {
             description = "The path to the classifier model of morphological analysis")
     public String classifierModel;
 
-    @Parameter(names = {"-tt", "--TreeTagger"},
+    @Parameter(names = {"-tt", "--treeTagger"},
             description = "The path to the home directory of TreeTagger executor. It must located in '*/bin/' directory")
     public String treeTaggerHome;
 
-    @Parameter(names = {"-pc", "--ParserConfig"}, description = "The path to the home directory of parser configuration")
+    @Parameter(names = {"-pc", "--parserConfig"}, description = "The path to the home directory of parser configuration")
     public String parserConfig;
 
-    @Parameter(names = {"-h", "--help"}, description = "Information on use of mp4ru", help = true)
+    @Parameter(names = {"-cs", "--commonSource"},
+            description = "Represents the common data source. "
+                    + "It is possible to use instead of 'classifierModel', 'treeTagger' and 'parserConfig' "
+                    + "if in this place there are all necessary resources")
+    public String commonSource;
+
+    @Parameter(names = {"-h", "--help"}, description = "Information on use of the mp4ru", help = true)
     public boolean help = false;
 
 
@@ -39,8 +45,15 @@ public class Main {
     }
 
     private void run() {
-        if (textFilePath == null || classifierModel == null || treeTaggerHome == null || parserConfig == null) {
+        if (textFilePath == null
+                || (commonSource == null
+                && (classifierModel == null || treeTaggerHome == null || parserConfig == null))) {
             LOG.error("Missing required parameters.");
+            return;
+        }
+
+        if (commonSource != null) {
+            LOG.warn("Sorry, this feature is not yet supported.");
             return;
         }
 
