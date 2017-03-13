@@ -33,7 +33,7 @@ public class StatefulTokenHandler implements AdvancedTokenHandler<Conll> {
     }
 
     private boolean isTerminateMarks(String token) {
-        return token.replaceAll("\\.!?", "").length() == 0;
+        return token.replaceAll("[.!?]", "").length() == 0;
     }
 }
 
