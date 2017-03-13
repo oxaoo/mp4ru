@@ -26,6 +26,16 @@ public class RussianParser {
         utils = new SyntaxUtils();
     }
 
+    /**
+     * Parsing text.
+     *
+     * @param textFilePath    the text file path (*.txt)
+     * @param classifierModel the classifier model (*.par)
+     * @param treeTaggerHome  the tree tagger home (*\bin\)
+     * @param parserConfig    the parser config (*.mco)
+     * @return the path to parsing text
+     * @throws FailedParsingException the failed parsing exception
+     */
     public String parsing(String textFilePath, String classifierModel, String treeTaggerHome, String parserConfig)
             throws FailedParsingException {
         try {

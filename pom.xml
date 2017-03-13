@@ -10,7 +10,7 @@
     <name>MaltParser for Russian</name>
 
     <properties>
-        <maltparser.version>1.8.1</maltparser.version>
+        <maltparser.version>1.9.0</maltparser.version>
         <tt4j.version>1.2.1</tt4j.version>
         <slf4j.version>1.7.21</slf4j.version>
         <java.version>1.8</java.version>
@@ -52,6 +52,7 @@
             <version>${slf4j.version}</version>
         </dependency>
 
+        <!--Command line handler-->
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
