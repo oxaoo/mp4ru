@@ -1,18 +1,12 @@
 package com.github.oxaoo.mp4ru.syntax.tagging;
 
 import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
-import com.github.oxaoo.mp4ru.exceptions.FailedStoreTokensException;
 import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
-import static com.github.oxaoo.mp4ru.syntax.GlobalPropertyKeys.CONLL_TEXT_FILE;
 
 
 /**
@@ -71,32 +65,5 @@ public class PosTagger {
             tt.destroy();
         }
         return tokenHandler.getTokens();
-    }
-
-
-    /**
-     * Write tagged tokens to file in conll format. The file use for future parsing.
-     *
-     * @param tokens the list of tokens
-     * @throws FailedStoreTokensException the failed store tokens exception
-     */
-    @Deprecated
-    public void writeTokens(List<Conll> tokens) throws FailedStoreTokensException {
-        File file = new File(CONLL_TEXT_FILE);
-        try {
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            for (Conll token : tokens) {
-                bw.write(token.toRow());
-            }
-            bw.close();
-        } catch (IOException e) {
-            throw new FailedStoreTokensException("Failed to write the tokens to file \'" + CONLL_TEXT_FILE + "\'.", e);
-        }
     }
 }

@@ -42,7 +42,6 @@ public class RussianParser {
             return this.execute(textFilePath, classifierModel, treeTaggerHome, parserConfig);
         } catch (ReadInputTextException
                 | IncorrectTokenException
-                | FailedStoreTokensException
                 | ClassifierModelNotFoundException
                 | InitSyntaxAnalyzerException
                 | SyntaxAnalysisException
@@ -55,7 +54,6 @@ public class RussianParser {
             throws ReadInputTextException,
             IncorrectTokenException,
             ClassifierModelNotFoundException,
-            FailedStoreTokensException,
             InitSyntaxAnalyzerException,
             SyntaxAnalysisException,
             WriteToFileException {
@@ -70,7 +68,6 @@ public class RussianParser {
         LOG.info("Tagging...");
         PosTagger tagger = new PosTagger(classifierModel, treeTaggerHome);
         List<Conll> taggingTokens = tagger.tagging(tokens);
-//        tagger.writeTokens(taggingTokens);
         LOG.debug("Tagged tokens: {}", taggingTokens);
 
         //prepare...
@@ -78,11 +75,7 @@ public class RussianParser {
 
         //syntactic analyze.
         LOG.info("Parsing...");
-//        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig, parseFilePath);
         SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig);
-//        analyzer.analyze();
-        analyzer.analyze(taggingTokens, parseFilePath);
-
-        return parseFilePath;
+        return analyzer.analyze(taggingTokens, parseFilePath);
     }
 }
