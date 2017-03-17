@@ -1,23 +1,20 @@
 package com.github.oxaoo.mp4ru.syntax.parse;
 
-import com.github.oxaoo.mp4ru.exceptions.FailedInitSyntaxAnalyzerException;
-import com.github.oxaoo.mp4ru.exceptions.FailedSyntaxAnalysisException;
-import com.github.oxaoo.mp4ru.syntax.RussianParser;
+import com.github.oxaoo.mp4ru.exceptions.InitSyntaxAnalyzerException;
+import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;
+import com.github.oxaoo.mp4ru.exceptions.SyntaxAnalysisException;
+import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import org.maltparser.MaltParserService;
 import org.maltparser.concurrent.ConcurrentMaltParserModel;
 import org.maltparser.concurrent.ConcurrentMaltParserService;
-import org.maltparser.concurrent.ConcurrentUtils;
 import org.maltparser.core.exception.MaltChainedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * The syntax analyzer.
@@ -26,21 +23,42 @@ import java.util.Arrays;
  * @version 1.0
  * @since 12.02.2017
  */
+//todo added SyntaxAnalyzerFactory
 public class SyntaxAnalyzer {
     private static final Logger LOG = LoggerFactory.getLogger(SyntaxAnalyzer.class);
 
-    private final MaltParserService maltParserService;
-    private final String parserConfigDirectory;
-    private final String parseFilePath;
+    @Deprecated private final MaltParserService maltParserService;
+    @Deprecated private final String parserConfigDirectory;
+    @Deprecated private final String parseFilePath;
 
-    public SyntaxAnalyzer(String parserConfig, String parseFilePath) throws FailedInitSyntaxAnalyzerException {
+    final ConcurrentMaltParserModel parserModel;
+
+    @Deprecated
+    public SyntaxAnalyzer(String parserConfig, String parseFilePath) throws InitSyntaxAnalyzerException {
         try {
             this.maltParserService = new MaltParserService(SyntaxPropertyKeys.OPTION_CONTAINER);
         } catch (MaltChainedException e) {
-            throw new FailedInitSyntaxAnalyzerException("Failed to initialize the syntax analyzer.", e);
+            throw new InitSyntaxAnalyzerException("Failed to initialize the syntax analyzer.", e);
         }
         this.parserConfigDirectory = SyntaxPropertyKeys.CONFIG_WORKINGDIR_KEY + parserConfig;
         this.parseFilePath = SyntaxPropertyKeys.OUTPUT_OUTFILE_KEY + parseFilePath;
+
+        this.parserModel = null;
+    }
+
+    public SyntaxAnalyzer(String parserConfig) throws InitSyntaxAnalyzerException {
+        parseFilePath = null;
+        maltParserService = null;
+        parserConfigDirectory = null;
+
+        try {
+            URL parserModelUrl = new File(parserConfig).toURI().toURL();
+            this.parserModel = ConcurrentMaltParserService.initializeParserModel(parserModelUrl);
+        } catch (MalformedURLException e) {
+            throw new InitSyntaxAnalyzerException("Unable to retrieve the file", e);
+        } catch (MaltChainedException e) {
+            throw new InitSyntaxAnalyzerException("Unable to load the file", e);
+        }
     }
 
     /**
@@ -48,7 +66,8 @@ public class SyntaxAnalyzer {
      *
      * @return <tt>true</tt> if analyze is successful
      */
-    public boolean analyze() throws FailedSyntaxAnalysisException {
+    @Deprecated
+    public boolean analyze() throws SyntaxAnalysisException {
         final String command = this.parserConfigDirectory
                 + SyntaxPropertyKeys.CONFIG_NAME_MODEL
                 + SyntaxPropertyKeys.INPUT_INFILE_PATH
@@ -58,51 +77,30 @@ public class SyntaxAnalyzer {
             this.maltParserService.runExperiment(command.trim());
             return true;
         } catch (MaltChainedException e) {
-            throw new FailedSyntaxAnalysisException("Failed to syntax analysis.", e);
+            throw new SyntaxAnalysisException("Failed to syntax analysis.", e);
         }
     }
 
 
-    public boolean runtimeAnalyze() {
-        URL maltModelUrl = null;
-        ConcurrentMaltParserModel model;
+    public boolean analyze(List<Conll> taggingTokens, String parseFilePath)
+            throws SyntaxAnalysisException, WriteToFileException {
+        String[] inputTokens = taggingTokens.stream().map(Conll::toRow).toArray(String[]::new);
         try {
-            maltModelUrl = new File("res/russian.mco").toURI().toURL();
-            model = ConcurrentMaltParserService.initializeParserModel(maltModelUrl);
-        } catch (MalformedURLException e) {
-            LOG.error("Error while load maltparser model");
-            return false;
+            String[] outputTokens = parserModel.parseTokens(inputTokens);
+            this.writeParsedText(parseFilePath, outputTokens);
         } catch (MaltChainedException e) {
-            LOG.error("Error while init maltparser model");
-            return false;
+            throw new SyntaxAnalysisException("Failed to syntax analysis.", e);
         }
-
-        BufferedReader bf;
-        try {
-            bf = new BufferedReader(new InputStreamReader(new File("res/text.conll")
-                            .toURI().toURL().openStream(), "UTF-8"));
-        } catch (IOException e) {
-            LOG.error("Error while load prepare tokens for maltparser");
-            return false;
-        }
-
-        String[] inputTokens = null;
-        do {
-            try {
-                inputTokens = ConcurrentUtils.readSentence(bf);
-                String[] outputTokens = model.parseTokens(inputTokens);
-                for (String t : outputTokens) {
-                    LOG.info("Tokens: {}", t);
-                }
-            } catch (IOException e) {
-                LOG.error("Error while read tokens");
-                return false;
-            } catch (MaltChainedException e) {
-                LOG.error("Error while parse tokens");
-                return false;
-            }
-        } while (inputTokens.length > 0);
-
         return true;
+    }
+
+    private void writeParsedText(String fileName, String[] strings) throws WriteToFileException {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
+            for (String string : strings) {
+                bw.write(string + "\n");
+            }
+        } catch (IOException e) {
+            throw new WriteToFileException("Failed to write the parsed text into a file.", e);
+        }
     }
 }

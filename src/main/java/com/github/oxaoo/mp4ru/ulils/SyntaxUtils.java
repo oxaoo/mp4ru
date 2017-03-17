@@ -18,6 +18,10 @@ import static com.github.oxaoo.mp4ru.syntax.GlobalPropertyKeys.CONLL_TEXT_FILE;
 public class SyntaxUtils {
     private static final Logger LOG = LoggerFactory.getLogger(SyntaxUtils.class);
 
+    /**
+     * Remove temporary files with tagged tokens [*.conll]
+     */
+    @Deprecated
     public void removeTemporaryFiles() {
         Path path = Paths.get(CONLL_TEXT_FILE);
         try {

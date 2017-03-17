@@ -44,11 +44,10 @@ public class RussianParser {
                 | IncorrectTokenException
                 | FailedStoreTokensException
                 | ClassifierModelNotFoundException
-                | FailedInitSyntaxAnalyzerException
-                | FailedSyntaxAnalysisException e) {
+                | InitSyntaxAnalyzerException
+                | SyntaxAnalysisException
+                | WriteToFileException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
-        } finally {
-//            this.utils.removeTemporaryFiles();
         }
     }
 
@@ -57,8 +56,9 @@ public class RussianParser {
             IncorrectTokenException,
             ClassifierModelNotFoundException,
             FailedStoreTokensException,
-            FailedInitSyntaxAnalyzerException,
-            FailedSyntaxAnalysisException {
+            InitSyntaxAnalyzerException,
+            SyntaxAnalysisException,
+            WriteToFileException {
 
         //tokenization.
         LOG.info("Tokenization...");
@@ -70,17 +70,18 @@ public class RussianParser {
         LOG.info("Tagging...");
         PosTagger tagger = new PosTagger(classifierModel, treeTaggerHome);
         List<Conll> taggingTokens = tagger.tagging(tokens);
-        tagger.writeTokens(taggingTokens);
-        LOG.debug("Tagging tokens: {}", taggingTokens);
+//        tagger.writeTokens(taggingTokens);
+        LOG.debug("Tagged tokens: {}", taggingTokens);
 
         //prepare...
         String parseFilePath = this.utils.makeParseFilePath(textFilePath);
 
         //syntactic analyze.
         LOG.info("Parsing...");
-        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig, parseFilePath);
+//        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig, parseFilePath);
+        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig);
 //        analyzer.analyze();
-        analyzer.runtimeAnalyze();
+        analyzer.analyze(taggingTokens, parseFilePath);
 
         return parseFilePath;
     }

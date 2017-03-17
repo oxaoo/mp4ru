@@ -8,30 +8,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //-tf res/text.txt -cm res/russian-utf8.par -tt res/ -pc res/
+//-cm res/russian-utf8.par -tf res/text.txt -tt res/ -pc res/
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    @Parameter(names = {"-tf", "--textFile"}, description = "The path to the text file")
+    @Parameter(
+            names = {"-tf", "--textFile"},
+            description = "The path to the text file [*.txt]")
     public String textFilePath;
 
-    @Parameter(names = {"-cm", "--classifierModel"},
-            description = "The path to the classifier model of morphological analysis")
+    @Parameter(
+            names = {"-cm", "--classifierModel"},
+            description = "The path to the classifier model of morphological analysis [*.par]")
     public String classifierModel;
 
-    @Parameter(names = {"-tt", "--treeTagger"},
-            description = "The path to the home directory of TreeTagger executor. It must located in '*/bin/' directory")
+    @Parameter(
+            names = {"-tt", "--treeTagger"},
+            description = "The path to the home directory of TreeTagger executor. " +
+                    "It must located in '*/bin/' directory")
     public String treeTaggerHome;
 
-    @Parameter(names = {"-pc", "--parserConfig"}, description = "The path to the home directory of parser configuration")
+    @Parameter(
+            names = {"-pc", "--parserConfig"},
+            description = "The path to the home directory of parser configuration [*.mco]")
     public String parserConfig;
 
-    @Parameter(names = {"-cs", "--commonSource"},
+    @Parameter(
+            names = {"-cs", "--commonSource"},
             description = "Represents the common data source. "
                     + "It is possible to use instead of 'classifierModel', 'treeTagger' and 'parserConfig' "
                     + "if in this place there are all necessary resources")
     public String commonSource;
 
-    @Parameter(names = {"-h", "--help"}, description = "Information on use of the mp4ru", help = true)
+    @Parameter(
+            names = {"-h", "--help"},
+            description = "Information on use of the mp4ru",
+            help = true)
     public boolean help = false;
 
 
@@ -62,7 +74,8 @@ public class Main {
         LOG.debug("Current dir: " + dir);
 
         try {
-            String resultParseFile = new RussianParser().parsing(textFilePath, classifierModel, treeTaggerHome, parserConfig);
+            String resultParseFile = new RussianParser()
+                    .parsing(textFilePath, classifierModel, treeTaggerHome, parserConfig);
             LOG.info("Successful parsing! The result of parsing is presented in the {} file.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parsing. Cause: " + e.getMessage());

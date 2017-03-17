@@ -73,6 +73,14 @@ public class PosTagger {
         return tokenHandler.getTokens();
     }
 
+
+    /**
+     * Write tagged tokens to file in conll format. The file use for future parsing.
+     *
+     * @param tokens the list of tokens
+     * @throws FailedStoreTokensException the failed store tokens exception
+     */
+    @Deprecated
     public void writeTokens(List<Conll> tokens) throws FailedStoreTokensException {
         File file = new File(CONLL_TEXT_FILE);
         try {
