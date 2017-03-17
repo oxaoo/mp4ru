@@ -25,11 +25,11 @@ import java.util.List;
  * @version 1.0
  * @since 12.02.2017
  */
-//todo added SyntaxAnalyzerFactory
 public class SyntaxAnalyzer {
+    private static volatile SyntaxAnalyzer syntaxAnalyzer;
     private final ConcurrentMaltParserModel parserModel;
 
-    public SyntaxAnalyzer(String parserConfig) throws InitSyntaxAnalyzerException {
+    private SyntaxAnalyzer(String parserConfig) throws InitSyntaxAnalyzerException {
         try {
             URL parserModelUrl = new File(parserConfig).toURI().toURL();
             this.parserModel = ConcurrentMaltParserService.initializeParserModel(parserModelUrl);
@@ -38,6 +38,17 @@ public class SyntaxAnalyzer {
         } catch (MaltChainedException e) {
             throw new InitSyntaxAnalyzerException("Unable to load the file.", e);
         }
+    }
+
+    public static SyntaxAnalyzer getInstance(String parserConfig) throws InitSyntaxAnalyzerException {
+        if (syntaxAnalyzer == null) {
+            synchronized (SyntaxAnalyzer.class) {
+                if (syntaxAnalyzer == null) {
+                    syntaxAnalyzer = new SyntaxAnalyzer(parserConfig);
+                }
+            }
+        }
+        return syntaxAnalyzer;
     }
 
     public String analyze(List<Conll> taggingTokens, String parseFilePath)

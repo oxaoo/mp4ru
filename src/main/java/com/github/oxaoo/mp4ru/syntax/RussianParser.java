@@ -75,7 +75,7 @@ public class RussianParser {
 
         //syntactic analyze.
         LOG.info("Parsing...");
-        SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig);
+        SyntaxAnalyzer analyzer = SyntaxAnalyzer.getInstance(parserConfig);
         return analyzer.analyze(taggingTokens, parseFilePath);
     }
 }
