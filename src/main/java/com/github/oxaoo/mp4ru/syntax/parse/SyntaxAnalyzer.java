@@ -67,7 +67,7 @@ public class SyntaxAnalyzer {
         URL maltModelUrl = null;
         ConcurrentMaltParserModel model;
         try {
-            maltModelUrl = new File("res/russian/russian.mco").toURI().toURL();
+            maltModelUrl = new File("res/russian.mco").toURI().toURL();
             model = ConcurrentMaltParserService.initializeParserModel(maltModelUrl);
         } catch (MalformedURLException e) {
             LOG.error("Error while load maltparser model");
@@ -91,7 +91,9 @@ public class SyntaxAnalyzer {
             try {
                 inputTokens = ConcurrentUtils.readSentence(bf);
                 String[] outputTokens = model.parseTokens(inputTokens);
-                LOG.info("Tokens: {}", Arrays.toString(outputTokens));
+                for (String t : outputTokens) {
+                    LOG.info("Tokens: {}", t);
+                }
             } catch (IOException e) {
                 LOG.error("Error while read tokens");
                 return false;
