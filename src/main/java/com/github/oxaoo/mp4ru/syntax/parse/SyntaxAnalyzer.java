@@ -7,8 +7,6 @@ import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import org.maltparser.concurrent.ConcurrentMaltParserModel;
 import org.maltparser.concurrent.ConcurrentMaltParserService;
 import org.maltparser.core.exception.MaltChainedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,15 +47,27 @@ public class SyntaxAnalyzer {
         return parseFilePath;
     }
 
-    //Syntax analyze by means of MaltParser.
     public List<String> analyze(List<Conll> taggingTokens) throws SyntaxAnalysisException {
-        String[] inputTokens = taggingTokens.stream().map(Conll::toRow).toArray(String[]::new);
-        try {
-            String[] outputTokens = parserModel.parseTokens(inputTokens);
-            return Arrays.asList(outputTokens);
-        } catch (MaltChainedException e) {
-            throw new SyntaxAnalysisException("Failed to syntax analysis.", e);
+        List<String> outputTokens = new ArrayList<>();
+        List<String> sentenceInputTokens = new ArrayList<>();
+        Conll lastToken = taggingTokens.get(taggingTokens.size() - 1);
+        for (Conll taggingToken : taggingTokens) {
+            //if it is token of new sentence
+            if (taggingToken.getId() == 1 && !sentenceInputTokens.isEmpty()
+                    || taggingToken.equals(lastToken)) {
+                try {
+                    String[] sentenceOutputTokens = this.parserModel
+                            .parseTokens(sentenceInputTokens.stream()
+                                    .toArray(String[]::new));
+                    outputTokens.addAll(Arrays.asList(sentenceOutputTokens));
+                } catch (MaltChainedException e) {
+                    throw new SyntaxAnalysisException("Failed to syntax analysis.", e);
+                }
+                sentenceInputTokens = new ArrayList<>();
+            }
+            sentenceInputTokens.add(taggingToken.toRow());
         }
+        return outputTokens;
     }
 
     private void writeParsedText(String fileName, List<String> strings) throws WriteToFileException {

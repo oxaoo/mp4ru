@@ -124,6 +124,10 @@ public class Conll {
                 + pDepRel + "\n";
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "Conll{" +
