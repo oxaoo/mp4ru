@@ -107,9 +107,9 @@
                 <includes>
                     <include>log4j.properties</include>
                 </includes>
-                <excludes>
+                <!--<excludes>
                     <exclude>**/*</exclude>
-                </excludes>
+                </excludes>-->
             </resource>
         </resources>
     </build>

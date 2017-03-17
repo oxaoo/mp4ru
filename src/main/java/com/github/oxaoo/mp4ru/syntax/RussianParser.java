@@ -48,7 +48,7 @@ public class RussianParser {
                 | FailedSyntaxAnalysisException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
         } finally {
-            this.utils.removeTemporaryFiles();
+//            this.utils.removeTemporaryFiles();
         }
     }
 
@@ -79,7 +79,8 @@ public class RussianParser {
         //syntactic analyze.
         LOG.info("Parsing...");
         SyntaxAnalyzer analyzer = new SyntaxAnalyzer(parserConfig, parseFilePath);
-        analyzer.analyze();
+//        analyzer.analyze();
+        analyzer.runtimeAnalyze();
 
         return parseFilePath;
     }
