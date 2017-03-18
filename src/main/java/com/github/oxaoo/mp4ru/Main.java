@@ -7,8 +7,10 @@ import com.github.oxaoo.mp4ru.syntax.RussianParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//-tf res/text.txt -cm res/russian-utf8.par -tt res/ -pc res/
-//-cm res/russian-utf8.par -tf res/text.txt -tt res/ -pc res/
+/*
+    Program arguments to run example:
+    -cm res/russian-utf8.par -tf res/text.txt -tt res/ -pc res/russian.mco
+ */
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 

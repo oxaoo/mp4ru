@@ -119,7 +119,6 @@ public class RussianParser {
      */
     private List<String> analyze(List<Conll> taggedTokens)
             throws InitSyntaxAnalyzerException, SyntaxAnalysisException {
-        //syntactic analyze.
         LOG.info("Parsing...");
         SyntaxAnalyzer analyzer = SyntaxAnalyzer.getInstance(this.parserConfigPath);
         return analyzer.analyze(taggedTokens);

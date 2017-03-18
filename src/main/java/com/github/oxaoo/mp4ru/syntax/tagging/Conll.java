@@ -1,5 +1,10 @@
 package com.github.oxaoo.mp4ru.syntax.tagging;
 
+import com.github.oxaoo.mp4ru.exceptions.FailedConllMapException;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The class represents a CoNLL-X data format.
  * The main purpose of which is the multi-lingual dependency parseFromFile.
@@ -80,6 +85,7 @@ public class Conll {
      */
     private final String pDepRel;
 
+
     /**
      * The constructor suitable for use after the morphological analysis.
      *
@@ -103,7 +109,22 @@ public class Conll {
         this.pDepRel = String.valueOf(UNDERSCORE);
     }
 
-    private char getPrefix(String feats) {
+    public Conll(int id, String form, String lemma,
+                 char cPosTag, char posTag, String feats,
+                 int head, String depRel, int pHead, String pDepRel) {
+        this.id = id;
+        this.form = form;
+        this.lemma = lemma;
+        this.cPosTag = cPosTag;
+        this.posTag = posTag;
+        this.feats = feats;
+        this.head = head;
+        this.depRel = depRel;
+        this.pHead = pHead;
+        this.pDepRel = pDepRel;
+    }
+
+    public char getPrefix(String feats) {
         if (feats == null || feats.startsWith("\\W")) {
             return UNDERSCORE;
         }
@@ -124,8 +145,63 @@ public class Conll {
                 + pDepRel + "\n";
     }
 
+    public static Conll map(String params) throws FailedConllMapException {
+        if (params == null || params.isEmpty()) {
+            throw new FailedConllMapException("Empty parameter string.");
+        }
+        return map(Arrays.asList(params.trim().split("\\s")));
+    }
+
+    public static Conll map(List<String> params) throws FailedConllMapException {
+        if (params.size() != 10) {
+            throw new FailedConllMapException("Not enough arguments to map.");
+        }
+
+        try {
+            int id = Integer.valueOf(params.get(0));
+            String form = params.get(1);
+            String lemma = params.get(2);
+            char cPosTag = params.get(3).charAt(0);
+            char posTag = params.get(4).charAt(0);
+            String feats = params.get(5);
+            int head = Integer.valueOf(params.get(6));
+            String depRel = params.get(7);
+            int pHead = params.get(8).equals(String.valueOf(UNDERSCORE))
+                    ? UNKNOWN_PROJECTIVE_HEAD
+                    : Integer.valueOf(params.get(8));
+            String pDepRel = params.get(9);
+            return new Conll(id, form, lemma, cPosTag, posTag, feats, head, depRel, pHead, pDepRel);
+        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            throw new FailedConllMapException("Incorrect parameters for mapping to an conll.", e);
+        }
+    }
+
     public int getId() {
         return id;
+    }
+
+    public int getHead() {
+        return head;
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public String getLemma() {
+        return lemma;
+    }
+
+    public char getPosTag() {
+        return posTag;
+    }
+
+    public String getFeats() {
+        return feats;
+    }
+
+    public String getDepRel() {
+        return depRel;
     }
 
     @Override
