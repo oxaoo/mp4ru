@@ -1,6 +1,6 @@
 package com.github.oxaoo.mp4ru.utils;
 
-import com.github.oxaoo.mp4ru.ulils.SyntaxUtils;
+import com.github.oxaoo.mp4ru.ulils.ParserUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,12 +10,12 @@ import org.junit.Test;
  * @version 1.0
  * @since 17.02.2017
  */
-public class SyntaxUtilsTest {
-    private SyntaxUtils utils;
+public class ParserUtilsTest {
+    private ParserUtils utils;
 
     @Before
     public void init(){
-        this.utils = new SyntaxUtils();
+        this.utils = new ParserUtils();
     }
 
     @Test

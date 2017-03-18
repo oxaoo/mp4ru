@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface Tokenizer {
 
-    List<String> tokenization() throws ReadInputTextException;
+    List<String> tokenization(String text);
 }

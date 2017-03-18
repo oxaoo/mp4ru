@@ -81,6 +81,7 @@ public class SyntaxAnalyzer {
         return outputTokens;
     }
 
+    @Deprecated
     private void writeParsedText(String fileName, List<String> strings) throws WriteToFileException {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
             for (String string : strings) {
