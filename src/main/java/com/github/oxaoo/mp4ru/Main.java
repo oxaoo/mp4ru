@@ -74,8 +74,8 @@ public class Main {
         LOG.debug("Current dir: " + dir);
 
         try {
-            String resultParseFile = new RussianParser()
-                    .parseFromFile(textFilePath, classifierModel, treeTaggerHome, parserConfig);
+            String resultParseFile = new RussianParser(classifierModel, treeTaggerHome, parserConfig)
+                    .parseFromFile(textFilePath);
             LOG.info("Successful parseFromFile! The result of parseFromFile is presented in the {} file.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parseFromFile. Cause: " + e.getMessage());
