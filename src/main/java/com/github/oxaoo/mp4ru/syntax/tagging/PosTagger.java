@@ -18,23 +18,8 @@ import java.util.List;
  */
 public class PosTagger {
     private static final String TREE_TAGGER_HOME_PROPERTY = "treetagger.home";
-    public static final String DEFAULT_TREE_TAGGER_HOME = "src/main/resources/TreeTagger";
-    private static final String DEFAULT_MODEL_FILE = "src/main/resources/russian-utf8.par";
-
-//    static {
-//        System.setProperty("treetagger.home", "src/main/resources/TreeTagger");
-//    }
 
     private final String modelFilePath;
-
-    public PosTagger() {
-        this.modelFilePath = DEFAULT_MODEL_FILE;
-        System.setProperty(TREE_TAGGER_HOME_PROPERTY, DEFAULT_TREE_TAGGER_HOME);
-    }
-
-    public PosTagger(String modelFilePath) {
-        this.modelFilePath = modelFilePath;
-    }
 
     public PosTagger(String modelFilePath, String treeTaggerHome) {
         this.modelFilePath = modelFilePath;
