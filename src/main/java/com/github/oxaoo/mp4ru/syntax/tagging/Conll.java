@@ -2,7 +2,7 @@ package com.github.oxaoo.mp4ru.syntax.tagging;
 
 /**
  * The class represents a CoNLL-X data format.
- * The main purpose of which is the multi-lingual dependency parsingFromFile.
+ * The main purpose of which is the multi-lingual dependency parseFromFile.
  *
  * @author Alexander Kuleshov
  * @version 1.0

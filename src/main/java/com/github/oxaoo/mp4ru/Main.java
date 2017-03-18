@@ -75,10 +75,10 @@ public class Main {
 
         try {
             String resultParseFile = new RussianParser()
-                    .parsingFromFile(textFilePath, classifierModel, treeTaggerHome, parserConfig);
-            LOG.info("Successful parsingFromFile! The result of parsingFromFile is presented in the {} file.", resultParseFile);
+                    .parseFromFile(textFilePath, classifierModel, treeTaggerHome, parserConfig);
+            LOG.info("Successful parseFromFile! The result of parseFromFile is presented in the {} file.", resultParseFile);
         } catch (FailedParsingException e) {
-            LOG.error("Exception during parsingFromFile. Cause: " + e.getMessage());
+            LOG.error("Exception during parseFromFile. Cause: " + e.getMessage());
             e.printStackTrace();
         }
     }

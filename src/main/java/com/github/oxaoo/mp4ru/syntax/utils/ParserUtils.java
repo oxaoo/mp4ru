@@ -1,4 +1,4 @@
-package com.github.oxaoo.mp4ru.ulils;
+package com.github.oxaoo.mp4ru.syntax.utils;
 
 import com.github.oxaoo.mp4ru.exceptions.ReadInputTextException;
 import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;

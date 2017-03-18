@@ -1,6 +1,6 @@
 package com.github.oxaoo.mp4ru.utils;
 
-import com.github.oxaoo.mp4ru.ulils.ParserUtils;
+import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

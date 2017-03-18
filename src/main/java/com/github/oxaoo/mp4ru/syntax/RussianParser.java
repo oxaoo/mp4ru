@@ -6,8 +6,7 @@ import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
 import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
-import com.github.oxaoo.mp4ru.syntax.utils.ParserPreprocessor;
-import com.github.oxaoo.mp4ru.ulils.ParserUtils;
+import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,24 +20,24 @@ import java.util.List;
 public class RussianParser {
     private static final Logger LOG = LoggerFactory.getLogger(RussianParser.class);
 
-    private final ParserUtils utils;
-
     public RussianParser() {
-        utils = new ParserUtils();
+
     }
 
     /**
-     * Parsing text.
+     * Parse Russian text.
      *
      * @param textFilePath    the text file path (*.txt)
      * @param classifierModel the classifier model (*.par)
      * @param treeTaggerHome  the tree tagger home (*\bin\)
      * @param parserConfig    the parser config (*.mco)
-     * @return the path to parsingFromFile text
-     * @throws FailedParsingException the failed parsingFromFile exception
+     * @return the path to parseFromFile text
+     * @throws FailedParsingException the failed parseFromFile exception
      */
-    public String parsingFromFile(String textFilePath, String classifierModel, String treeTaggerHome, String parserConfig)
-            throws FailedParsingException {
+    public String parseFromFile(String textFilePath,
+                                String classifierModel,
+                                String treeTaggerHome,
+                                String parserConfig) throws FailedParsingException {
         try {
             //prepare...
             String text = ParserUtils.readText(textFilePath);
@@ -107,38 +106,5 @@ public class RussianParser {
         LOG.info("Parsing...");
         SyntaxAnalyzer analyzer = SyntaxAnalyzer.getInstance(parserConfigPath);
         return analyzer.analyze(taggedTokens);
-    }
-
-
-    private String execute(String textFilePath, String classifierModel, String treeTaggerHome, String parserConfig)
-            throws ReadInputTextException,
-            IncorrectTokenException,
-            ClassifierModelNotFoundException,
-            InitSyntaxAnalyzerException,
-            SyntaxAnalysisException,
-            WriteToFileException {
-
-        //prepare...
-        String text = ParserPreprocessor.readText(textFilePath);
-
-        //tokenization.
-        LOG.info("Tokenization...");
-        Tokenizer tokenizer = new SimpleTokenizer();
-        List<String> tokens = tokenizer.tokenization(text);
-        LOG.debug("Tokens: {}", tokens);
-
-        //morphological analyze.
-        LOG.info("Tagging...");
-        PosTagger tagger = new PosTagger(classifierModel, treeTaggerHome);
-        List<Conll> taggingTokens = tagger.tagging(tokens);
-        LOG.debug("Tagged tokens: {}", taggingTokens);
-
-        //prepare...
-        String parseFilePath = this.utils.makeParseFilePath(textFilePath);
-
-        //syntactic analyze.
-        LOG.info("Parsing...");
-        SyntaxAnalyzer analyzer = SyntaxAnalyzer.getInstance(parserConfig);
-        return analyzer.analyze(taggingTokens, parseFilePath);
     }
 }
