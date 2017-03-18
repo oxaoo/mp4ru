@@ -51,44 +51,29 @@ public class SyntaxAnalyzer {
         return syntaxAnalyzer;
     }
 
-    public String analyze(List<Conll> taggingTokens, String parseFilePath)
-            throws SyntaxAnalysisException, WriteToFileException {
-        List<String> outputTokens = this.analyze(taggingTokens);
-        this.writeParsedText(parseFilePath, outputTokens);
-        return parseFilePath;
-    }
-
     public List<String> analyze(List<Conll> taggingTokens) throws SyntaxAnalysisException {
         List<String> outputTokens = new ArrayList<>();
         List<String> sentenceInputTokens = new ArrayList<>();
         Conll lastToken = taggingTokens.get(taggingTokens.size() - 1);
+        int prevTokenId = 0;
         for (Conll taggingToken : taggingTokens) {
+            boolean isLastToken = taggingToken.equals(lastToken);
             //if it is token of new sentence
-            if (taggingToken.getId() == 1 && !sentenceInputTokens.isEmpty()
-                    || taggingToken.equals(lastToken)) {
+            if (taggingToken.getId() <= prevTokenId || isLastToken) {
+                if (isLastToken) sentenceInputTokens.add(taggingToken.toRow());
                 try {
                     String[] sentenceOutputTokens = this.parserModel
-                            .parseTokens(sentenceInputTokens.stream()
-                                    .toArray(String[]::new));
+                            .parseTokens(sentenceInputTokens.stream().toArray(String[]::new));
                     outputTokens.addAll(Arrays.asList(sentenceOutputTokens));
                 } catch (MaltChainedException e) {
                     throw new SyntaxAnalysisException("Failed to syntax analysis.", e);
                 }
+                if (isLastToken) continue;
                 sentenceInputTokens = new ArrayList<>();
             }
             sentenceInputTokens.add(taggingToken.toRow());
+            prevTokenId = taggingToken.getId();
         }
         return outputTokens;
-    }
-
-    @Deprecated
-    private void writeParsedText(String fileName, List<String> strings) throws WriteToFileException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
-            for (String string : strings) {
-                bw.write(string + "\n");
-            }
-        } catch (IOException e) {
-            throw new WriteToFileException("Failed to write the parsed text into a file.", e);
-        }
     }
 }
