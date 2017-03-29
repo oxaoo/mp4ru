@@ -1,7 +1,6 @@
 package com.github.oxaoo.mp4ru.syntax;
 
 import com.github.oxaoo.mp4ru.exceptions.*;
-import com.github.oxaoo.mp4ru.syntax.parse.ParseResultType;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
@@ -42,7 +41,7 @@ public class RussianParser {
     /**
      * Parse Russian text.
      *
-     * @param textFilePath    the text file path (*.txt)
+     * @param textFilePath the text file path (*.txt)
      * @return the path to parseFromFile text
      * @throws FailedParsingException the failed parseFromFile exception
      */
@@ -84,18 +83,21 @@ public class RussianParser {
     /**
      * Parse list.
      *
-     * @param text       the text
-     * @param resultType the result type of tokens
+     * @param <T>  the type parameter
+     * @param text the text
+     * @param t    the t
      * @return the list of parsed tokens
      * @throws FailedParsingException the failed parsing exception
      */
-    public List<?> parse(String text, ParseResultType resultType) throws FailedParsingException {
+    @SuppressWarnings("unchecked")
+    public <T> List<T> parse(String text, Class<T> t) throws FailedParsingException {
+
         List<String> parsedTokens = this.parse(text);
-        if (resultType == ParseResultType.STRING) return parsedTokens;
-        else if (resultType == ParseResultType.CONLL) {
-            return parsedTokens.stream().map(Conll::safeMap).collect(Collectors.toList());
+        if (t == String.class) return (List<T>) parsedTokens;
+        else if (t == Conll.class) {
+            return (List<T>) parsedTokens.stream().map(Conll::safeMap).collect(Collectors.toList());
         } else {
-            throw new IllegalStateException("An incorrect type of parsing result is specified: " + resultType.name());
+            throw new IllegalStateException("An incorrect type of parsing result is specified: " + t.getSimpleName());
         }
     }
 
@@ -117,7 +119,7 @@ public class RussianParser {
     /**
      * Morphological analyze.
      *
-     * @param tokens              the tokens
+     * @param tokens the tokens
      * @return the list of tagging tokens
      */
     private List<Conll> tagging(List<String> tokens)
@@ -132,7 +134,7 @@ public class RussianParser {
     /**
      * Syntactic analyze - parsing text.
      *
-     * @param taggedTokens     the tagged tokens
+     * @param taggedTokens the tagged tokens
      * @return the list of parsed tokens
      * @throws InitSyntaxAnalyzerException the init syntax analyzer exception
      * @throws SyntaxAnalysisException     the syntax analysis exception
