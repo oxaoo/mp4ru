@@ -1,6 +1,7 @@
 package com.github.oxaoo.mp4ru.syntax;
 
 import com.github.oxaoo.mp4ru.exceptions.*;
+import com.github.oxaoo.mp4ru.syntax.parse.ParseResultType;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Alexander Kuleshov
@@ -76,6 +78,24 @@ public class RussianParser {
                 | InitSyntaxAnalyzerException
                 | SyntaxAnalysisException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
+        }
+    }
+
+    /**
+     * Parse list.
+     *
+     * @param text       the text
+     * @param resultType the result type of tokens
+     * @return the list of parsed tokens
+     * @throws FailedParsingException the failed parsing exception
+     */
+    public List<?> parse(String text, ParseResultType resultType) throws FailedParsingException {
+        List<String> parsedTokens = this.parse(text);
+        if (resultType == ParseResultType.STRING) return parsedTokens;
+        else if (resultType == ParseResultType.CONLL) {
+            return parsedTokens.stream().map(Conll::safeMap).collect(Collectors.toList());
+        } else {
+            throw new IllegalStateException("An incorrect type of parsing result is specified: " + resultType.name());
         }
     }
 

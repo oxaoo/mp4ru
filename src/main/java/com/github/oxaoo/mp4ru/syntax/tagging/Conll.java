@@ -1,6 +1,8 @@
 package com.github.oxaoo.mp4ru.syntax.tagging;
 
 import com.github.oxaoo.mp4ru.exceptions.FailedConllMapException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
  * @since 12.02.2017
  */
 public class Conll {
+    private static final Logger LOG = LoggerFactory.getLogger(Conll.class);
+
     private static final char UNDERSCORE = '_';
     private static final int UNKNOWN_HEAD = -1;
     private static final int UNKNOWN_PROJECTIVE_HEAD = -2;
@@ -143,6 +147,15 @@ public class Conll {
                 + depRel + "\t"
                 + (pHead == UNKNOWN_PROJECTIVE_HEAD ? "_" : pHead) + "\t"
                 + pDepRel + "\n";
+    }
+
+    public static Conll safeMap(String params) {
+        try {
+            return map(params);
+        } catch (FailedConllMapException e) {
+            LOG.warn("Failed mapping token from string to conll. Cause: {}", e.getMessage());
+            return null;
+        }
     }
 
     public static Conll map(String params) throws FailedConllMapException {
