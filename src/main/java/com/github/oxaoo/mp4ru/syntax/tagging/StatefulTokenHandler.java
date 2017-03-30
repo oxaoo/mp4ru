@@ -1,5 +1,7 @@
 package com.github.oxaoo.mp4ru.syntax.tagging;
 
+import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,11 +15,17 @@ import java.util.List;
 public class StatefulTokenHandler implements AdvancedTokenHandler<Conll> {
     private List<Conll> tokens = new LinkedList<>();
     private int counter = 0;
+    private final FragmentationType fragmentationType;
+
+    public StatefulTokenHandler(FragmentationType fragmentationType) {
+        this.fragmentationType = fragmentationType;
+    }
 
     @Override
     public void token(String token, String pos, String lemma) {
         this.tokens.add(new Conll(++counter, token, lemma, pos));
-        if (this.isTerminateMarks(token)) this.counter = 0;
+        if (fragmentationType == FragmentationType.FRAGMENTATION
+                && this.isTerminateMarks(token)) this.counter = 0;
     }
 
     @Override

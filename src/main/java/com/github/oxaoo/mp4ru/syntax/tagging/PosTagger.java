@@ -2,6 +2,7 @@ package com.github.oxaoo.mp4ru.syntax.tagging;
 
 import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
 import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
+import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
 import org.annolab.tt4j.TreeTaggerException;
 import org.annolab.tt4j.TreeTaggerWrapper;
 
@@ -30,13 +31,15 @@ public class PosTagger {
      * Part-of-Speech tagging the list of tokens.
      *
      * @param tokens the list of tokens
+     * @param fragmentationType
      * @return the list of processed tokens in CoNLL format
      * @throws ClassifierModelNotFoundException throw if classifier's model isn't found
      * @throws IncorrectTokenException          throw if there are incorrect tokens
      */
-    public List<Conll> tagging(List<String> tokens) throws ClassifierModelNotFoundException, IncorrectTokenException {
+    public List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
+            throws ClassifierModelNotFoundException, IncorrectTokenException {
         TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
-        AdvancedTokenHandler<Conll> tokenHandler = new StatefulTokenHandler();
+        AdvancedTokenHandler<Conll> tokenHandler = new StatefulTokenHandler(fragmentationType);
         try {
             tt.setModel(this.modelFilePath);
             tt.setHandler(tokenHandler);

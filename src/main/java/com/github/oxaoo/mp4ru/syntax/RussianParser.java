@@ -5,6 +5,7 @@ import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
 import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
+import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
 import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class RussianParser {
     }
 
     /**
-     * Parse Russian text.
+     * Parse Russian text from file.
      *
      * @param textFilePath the text file path (*.txt)
      * @return the path to parseFromFile text
@@ -68,16 +69,7 @@ public class RussianParser {
      * @throws FailedParsingException the failed parsing exception
      */
     public List<String> parse(String text) throws FailedParsingException {
-        try {
-            List<String> tokens = this.tokenization(text);
-            List<Conll> taggedTokens = this.tagging(tokens);
-            return this.analyze(taggedTokens);
-        } catch (IncorrectTokenException
-                | ClassifierModelNotFoundException
-                | InitSyntaxAnalyzerException
-                | SyntaxAnalysisException e) {
-            throw new FailedParsingException("Failed to parse the Russian text.", e);
-        }
+        return this.parse(text, String.class);
     }
 
     /**
@@ -89,10 +81,18 @@ public class RussianParser {
      * @return the list of parsed tokens
      * @throws FailedParsingException the failed parsing exception
      */
-    @SuppressWarnings("unchecked")
     public <T> List<T> parse(String text, Class<T> t) throws FailedParsingException {
+        return this.parse(text, t, FragmentationType.FRAGMENTATION);
+    }
 
-        List<String> parsedTokens = this.parse(text);
+    public <T> List<T> parseSentence(String text, Class<T> t) throws FailedParsingException {
+        return this.parse(text, t, FragmentationType.NO_FRAGMENTATION);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> List<T> parse(String text, Class<T> t, FragmentationType fragmentationType)
+            throws FailedParsingException {
+        List<String> parsedTokens = this.parse(text, fragmentationType);
         if (t == String.class) return (List<T>) parsedTokens;
         else if (t == Conll.class) {
             return (List<T>) parsedTokens.stream().map(Conll::safeMap).collect(Collectors.toList());
@@ -101,6 +101,18 @@ public class RussianParser {
         }
     }
 
+    private List<String> parse(String text, FragmentationType fragmentationType) throws FailedParsingException {
+        try {
+            List<String> tokens = this.tokenization(text);
+            List<Conll> taggedTokens = this.tagging(tokens, fragmentationType);
+            return this.analyze(taggedTokens);
+        } catch (IncorrectTokenException
+                | ClassifierModelNotFoundException
+                | InitSyntaxAnalyzerException
+                | SyntaxAnalysisException e) {
+            throw new FailedParsingException("Failed to parse the Russian text.", e);
+        }
+    }
 
     /**
      * Tokenization text.
@@ -120,13 +132,14 @@ public class RussianParser {
      * Morphological analyze.
      *
      * @param tokens the tokens
+     * @param fragmentationType
      * @return the list of tagging tokens
      */
-    private List<Conll> tagging(List<String> tokens)
+    private List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
             throws IncorrectTokenException, ClassifierModelNotFoundException {
         LOG.info("Tagging...");
         PosTagger tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
-        List<Conll> taggingTokens = tagger.tagging(tokens);
+        List<Conll> taggingTokens = tagger.tagging(tokens, fragmentationType);
         LOG.debug("Tagged tokens: {}", taggingTokens);
         return taggingTokens;
     }
