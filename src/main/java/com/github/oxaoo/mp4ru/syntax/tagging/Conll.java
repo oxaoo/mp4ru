@@ -166,8 +166,9 @@ public class Conll {
     }
 
     public static Conll map(List<String> params) throws FailedConllMapException {
-        if (params.size() != 10) {
-            throw new FailedConllMapException("Not enough arguments to map.");
+        //fixme can be '!=10'
+        if (params.size() < 10) {
+            throw new FailedConllMapException("Not enough arguments to map. Size: " + params.size());
         }
 
         try {

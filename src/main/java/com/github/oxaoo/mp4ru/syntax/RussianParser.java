@@ -81,7 +81,7 @@ public class RussianParser {
     }
 
     /**
-     * Parse list.
+     * Parse Russian text.
      *
      * @param <T>  the type parameter
      * @param text the text
