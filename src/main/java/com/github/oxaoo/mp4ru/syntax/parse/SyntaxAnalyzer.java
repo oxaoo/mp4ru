@@ -1,18 +1,14 @@
 package com.github.oxaoo.mp4ru.syntax.parse;
 
+import com.github.oxaoo.mp4ru.common.ResourceResolver;
 import com.github.oxaoo.mp4ru.exceptions.InitSyntaxAnalyzerException;
+import com.github.oxaoo.mp4ru.exceptions.ResourceResolverException;
 import com.github.oxaoo.mp4ru.exceptions.SyntaxAnalysisException;
-import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import org.maltparser.concurrent.ConcurrentMaltParserModel;
 import org.maltparser.concurrent.ConcurrentMaltParserService;
 import org.maltparser.core.exception.MaltChainedException;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +27,9 @@ public class SyntaxAnalyzer {
 
     private SyntaxAnalyzer(String parserConfig) throws InitSyntaxAnalyzerException {
         try {
-            URL parserModelUrl = new File(parserConfig).toURI().toURL();
+            URL parserModelUrl = ResourceResolver.getUrl(parserConfig);
             this.parserModel = ConcurrentMaltParserService.initializeParserModel(parserModelUrl);
-        } catch (MalformedURLException e) {
+        } catch (ResourceResolverException e) {
             throw new InitSyntaxAnalyzerException("Unable to retrieve the file.", e);
         } catch (MaltChainedException e) {
             throw new InitSyntaxAnalyzerException("Unable to load the file.", e);

@@ -4,8 +4,8 @@ import com.github.oxaoo.mp4ru.exceptions.*;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
-import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
+import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
 import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.slf4j.Logger;
@@ -108,6 +108,7 @@ public class RussianParser {
             return this.analyze(taggedTokens);
         } catch (IncorrectTokenException
                 | ClassifierModelNotFoundException
+                | InitPosTaggerException
                 | InitSyntaxAnalyzerException
                 | SyntaxAnalysisException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
@@ -131,12 +132,12 @@ public class RussianParser {
     /**
      * Morphological analyze.
      *
-     * @param tokens the tokens
+     * @param tokens            the tokens
      * @param fragmentationType
      * @return the list of tagging tokens
      */
     private List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
-            throws IncorrectTokenException, ClassifierModelNotFoundException {
+            throws IncorrectTokenException, ClassifierModelNotFoundException, InitPosTaggerException {
         LOG.info("Tagging...");
         PosTagger tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
         List<Conll> taggingTokens = tagger.tagging(tokens, fragmentationType);
