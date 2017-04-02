@@ -1,5 +1,6 @@
 package com.github.oxaoo.mp4ru.syntax.utils;
 
+import com.github.oxaoo.mp4ru.common.ResourceResolver;
 import com.github.oxaoo.mp4ru.exceptions.ReadInputTextException;
 import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;
 
@@ -37,7 +38,7 @@ public class ParserUtils {
      * @return the text
      */
     public static String readText(String textFilePath) throws ReadInputTextException {
-        try (BufferedReader br = new BufferedReader(new FileReader(textFilePath))) {
+        try (BufferedReader br = new BufferedReader(ResourceResolver.getResourceAsStreamReader(textFilePath))) {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
