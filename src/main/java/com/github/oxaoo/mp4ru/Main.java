@@ -2,10 +2,14 @@ package com.github.oxaoo.mp4ru;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
 import com.github.oxaoo.mp4ru.exceptions.FailedParsingException;
+import com.github.oxaoo.mp4ru.exceptions.InitPosTaggerException;
 import com.github.oxaoo.mp4ru.syntax.RussianParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 /*
     Program arguments to run example:
@@ -81,6 +85,9 @@ public class Main {
             LOG.info("Successful parseFromFile! The result of parseFromFile is presented in the {} file.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parseFromFile. Cause: " + e.getMessage());
+            e.printStackTrace();
+        } catch (ClassifierModelNotFoundException | InitPosTaggerException | IOException e) {
+            //fixme handle
             e.printStackTrace();
         }
     }

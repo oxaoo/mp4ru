@@ -11,6 +11,7 @@ import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,9 @@ public class RussianParser {
     private final String treeTaggerHome;
     private final String parserConfigPath;
 
+    private final Tokenizer tokenizer;
+    private final PosTagger tagger;
+
     /**
      * Instantiates a new Russian parser.
      *
@@ -33,10 +37,13 @@ public class RussianParser {
      * @param treeTaggerHome      the tree tagger home (*\bin\)
      * @param parserConfigPath    the parser config path (*.mco)
      */
-    public RussianParser(String classifierModelPath, String treeTaggerHome, String parserConfigPath) {
+    public RussianParser(String classifierModelPath, String treeTaggerHome, String parserConfigPath) throws ClassifierModelNotFoundException, InitPosTaggerException, IOException {
         this.classifierModelPath = classifierModelPath;
         this.treeTaggerHome = treeTaggerHome;
         this.parserConfigPath = parserConfigPath;
+
+        this.tokenizer = new SimpleTokenizer();
+        this.tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
     }
 
     /**
@@ -123,7 +130,7 @@ public class RussianParser {
      */
     private List<String> tokenization(String text) {
         LOG.info("Tokenization...");
-        Tokenizer tokenizer = new SimpleTokenizer();
+//        Tokenizer tokenizer = new SimpleTokenizer();
         List<String> tokens = tokenizer.tokenization(text);
         LOG.debug("Tokens: {}", tokens);
         return tokens;
@@ -139,8 +146,8 @@ public class RussianParser {
     private List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
             throws IncorrectTokenException, ClassifierModelNotFoundException, InitPosTaggerException {
         LOG.info("Tagging...");
-        PosTagger tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
-        List<Conll> taggingTokens = tagger.tagging(tokens, fragmentationType);
+//        PosTagger tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
+        List<Conll> taggingTokens = this.tagger.tagging(tokens, fragmentationType);
         LOG.debug("Tagged tokens: {}", taggingTokens);
         return taggingTokens;
     }

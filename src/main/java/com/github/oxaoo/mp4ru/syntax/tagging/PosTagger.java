@@ -24,9 +24,10 @@ public class PosTagger {
     private static final String TREE_TAGGER_HOME_PROPERTY = "treetagger.home";
 
     private final String modelFilePath;
+    private final TreeTaggerWrapper<String> tt;
 
     public PosTagger(String modelFilePath, String treeTaggerHome)
-            throws ClassifierModelNotFoundException, InitPosTaggerException {
+            throws ClassifierModelNotFoundException, InitPosTaggerException, IOException {
         String absoluteModelFilePath;
         try {
             absoluteModelFilePath = ResourceResolver.getAbsolutePath(modelFilePath);
@@ -44,6 +45,8 @@ public class PosTagger {
 
         this.modelFilePath = absoluteModelFilePath;
         System.setProperty(TREE_TAGGER_HOME_PROPERTY, absoluteTreeTaggerHome);
+        this.tt = new TreeTaggerWrapper<>();
+        this.tt.setModel(this.modelFilePath);
     }
 
     /**
@@ -55,12 +58,12 @@ public class PosTagger {
      * @throws ClassifierModelNotFoundException throw if classifier's model isn't found
      * @throws IncorrectTokenException          throw if there are incorrect tokens
      */
-    public List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
+    public synchronized List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
             throws ClassifierModelNotFoundException, IncorrectTokenException {
-        TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
+//        TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
         AdvancedTokenHandler<Conll> tokenHandler = new StatefulTokenHandler(fragmentationType);
         try {
-            tt.setModel(this.modelFilePath);
+//            tt.setModel(this.modelFilePath);
             tt.setHandler(tokenHandler);
             tt.process(tokens);
         } catch (IOException e) {
@@ -68,9 +71,9 @@ public class PosTagger {
                     + this.modelFilePath + "\' isn't found.", e);
         } catch (TreeTaggerException e) {
             throw new IncorrectTokenException("There is an incorrect token.", e);
-        } finally {
+        } /*finally {
             tt.destroy();
-        }
+        }*/
         return tokenHandler.getTokens();
     }
 }
