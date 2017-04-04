@@ -60,20 +60,28 @@ public class PosTagger {
      */
     public synchronized List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
             throws ClassifierModelNotFoundException, IncorrectTokenException {
-//        TreeTaggerWrapper<String> tt = new TreeTaggerWrapper<>();
         AdvancedTokenHandler<Conll> tokenHandler = new StatefulTokenHandler(fragmentationType);
         try {
-//            tt.setModel(this.modelFilePath);
-            tt.setHandler(tokenHandler);
-            tt.process(tokens);
+            this.tt.setHandler(tokenHandler);
+            this.tt.process(tokens);
         } catch (IOException e) {
             throw new ClassifierModelNotFoundException("The classifier's model \'"
                     + this.modelFilePath + "\' isn't found.", e);
         } catch (TreeTaggerException e) {
             throw new IncorrectTokenException("There is an incorrect token.", e);
-        } /*finally {
-            tt.destroy();
-        }*/
+        }
         return tokenHandler.getTokens();
+    }
+
+    public void destroy() {
+        if (this.tt.getModel() != null) {
+            this.tt.destroy();
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.destroy();
     }
 }

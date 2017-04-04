@@ -23,12 +23,9 @@ import java.util.stream.Collectors;
 public class RussianParser {
     private static final Logger LOG = LoggerFactory.getLogger(RussianParser.class);
 
-    private final String classifierModelPath;
-    private final String treeTaggerHome;
-    private final String parserConfigPath;
-
     private final Tokenizer tokenizer;
     private final PosTagger tagger;
+    private final SyntaxAnalyzer analyzer;
 
     /**
      * Instantiates a new Russian parser.
@@ -37,13 +34,31 @@ public class RussianParser {
      * @param treeTaggerHome      the tree tagger home (*\bin\)
      * @param parserConfigPath    the parser config path (*.mco)
      */
-    public RussianParser(String classifierModelPath, String treeTaggerHome, String parserConfigPath) throws ClassifierModelNotFoundException, InitPosTaggerException, IOException {
-        this.classifierModelPath = classifierModelPath;
-        this.treeTaggerHome = treeTaggerHome;
-        this.parserConfigPath = parserConfigPath;
-
+    @Deprecated
+    public RussianParser(String classifierModelPath, String treeTaggerHome, String parserConfigPath)
+            throws InitRussianParserException {
+        try {
+            this.tagger = new PosTagger(classifierModelPath, treeTaggerHome);
+            this.analyzer = SyntaxAnalyzer.getInstance(parserConfigPath);
+        } catch (ClassifierModelNotFoundException | InitPosTaggerException | IOException e) {
+            throw new InitRussianParserException("Error creating the POS Tagger.", e);
+        } catch (InitSyntaxAnalyzerException e) {
+            throw new InitRussianParserException("Error creating the Syntax Analyzer.", e);
+        }
         this.tokenizer = new SimpleTokenizer();
-        this.tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
+    }
+
+    /**
+     * Instantiates a new Russian parser.
+     *
+     * @param tokenizer the tokenizer
+     * @param tagger    the tagger
+     * @param analyzer  the analyzer
+     */
+    public RussianParser(Tokenizer tokenizer, PosTagger tagger, SyntaxAnalyzer analyzer) {
+        this.tokenizer = tokenizer;
+        this.tagger = tagger;
+        this.analyzer = analyzer;
     }
 
     /**
@@ -115,8 +130,6 @@ public class RussianParser {
             return this.analyze(taggedTokens);
         } catch (IncorrectTokenException
                 | ClassifierModelNotFoundException
-                | InitPosTaggerException
-                | InitSyntaxAnalyzerException
                 | SyntaxAnalysisException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
         }
@@ -130,8 +143,7 @@ public class RussianParser {
      */
     private List<String> tokenization(String text) {
         LOG.info("Tokenization...");
-//        Tokenizer tokenizer = new SimpleTokenizer();
-        List<String> tokens = tokenizer.tokenization(text);
+        List<String> tokens = this.tokenizer.tokenization(text);
         LOG.debug("Tokens: {}", tokens);
         return tokens;
     }
@@ -144,9 +156,8 @@ public class RussianParser {
      * @return the list of tagging tokens
      */
     private List<Conll> tagging(List<String> tokens, FragmentationType fragmentationType)
-            throws IncorrectTokenException, ClassifierModelNotFoundException, InitPosTaggerException {
+            throws IncorrectTokenException, ClassifierModelNotFoundException {
         LOG.info("Tagging...");
-//        PosTagger tagger = new PosTagger(this.classifierModelPath, this.treeTaggerHome);
         List<Conll> taggingTokens = this.tagger.tagging(tokens, fragmentationType);
         LOG.debug("Tagged tokens: {}", taggingTokens);
         return taggingTokens;
@@ -157,13 +168,10 @@ public class RussianParser {
      *
      * @param taggedTokens the tagged tokens
      * @return the list of parsed tokens
-     * @throws InitSyntaxAnalyzerException the init syntax analyzer exception
      * @throws SyntaxAnalysisException     the syntax analysis exception
      */
-    private List<String> analyze(List<Conll> taggedTokens)
-            throws InitSyntaxAnalyzerException, SyntaxAnalysisException {
+    private List<String> analyze(List<Conll> taggedTokens) throws SyntaxAnalysisException {
         LOG.info("Parsing...");
-        SyntaxAnalyzer analyzer = SyntaxAnalyzer.getInstance(this.parserConfigPath);
-        return analyzer.analyze(taggedTokens);
+        return this.analyzer.analyze(taggedTokens);
     }
 }
