@@ -17,6 +17,6 @@ hs_err_pid*
 target/
 # Disable logging
 logs/
-# Exclude libs
-src/main/resources/TreeTagger/bin/*
-src/main/resources/TreeTagger/lib/russian-big-utf8.par
+# Exclude resources
+res/
+dependency-reduced-pom.xml
