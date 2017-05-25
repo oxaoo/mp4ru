@@ -2,7 +2,7 @@ package com.github.oxaoo.mp4ru.exceptions;
 
 /**
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 04.04.2017
  */
 public class InitRussianParserException extends Exception {

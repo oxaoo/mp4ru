@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 /**
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 01.04.2017
  */
 public class ResourceResolver {

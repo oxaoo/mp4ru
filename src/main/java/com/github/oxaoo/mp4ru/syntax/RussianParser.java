@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 12.02.2017
  */
 public class RussianParser {

@@ -12,7 +12,7 @@ import java.util.List;
  * The main purpose of which is the multi-lingual dependency parseFromFile.
  *
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @see <a href="http://ilk.uvt.nl/conll/#dataformat">CoNLL-X data format</a>
  * @since 12.02.2017
  */

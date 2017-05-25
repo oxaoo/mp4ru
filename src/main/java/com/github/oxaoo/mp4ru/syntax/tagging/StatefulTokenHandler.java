@@ -9,7 +9,7 @@ import java.util.List;
  * The stateful token handler which implement the TokenHandler class.
  *
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 12.02.2017
  */
 public class StatefulTokenHandler implements AdvancedTokenHandler<Conll> {

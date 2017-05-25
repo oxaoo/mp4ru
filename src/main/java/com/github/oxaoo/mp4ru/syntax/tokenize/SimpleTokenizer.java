@@ -9,7 +9,7 @@ import java.util.Locale;
  * The simple tokenizer, breaking the text to the words.
  *
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 11.02.2017
  */
 public class SimpleTokenizer implements Tokenizer {

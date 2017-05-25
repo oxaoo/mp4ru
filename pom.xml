@@ -6,7 +6,7 @@
 
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru</artifactId>
-    <version>1.0</version>
+    <version>0.1.0</version>
     <name>MaltParser for Russian</name>
 
     <properties>

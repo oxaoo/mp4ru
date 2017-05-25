@@ -2,7 +2,7 @@ package com.github.oxaoo.mp4ru.exceptions;
 
 /**
  * @author Alexander Kuleshov
- * @version 1.0
+ * @version 0.1.0
  * @since 18.03.2017
  */
 public class FailedConllMapException extends Exception {
