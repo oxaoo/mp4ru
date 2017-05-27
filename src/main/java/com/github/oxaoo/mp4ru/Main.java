@@ -2,15 +2,11 @@ package com.github.oxaoo.mp4ru;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
-import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
 import com.github.oxaoo.mp4ru.exceptions.FailedParsingException;
-import com.github.oxaoo.mp4ru.exceptions.InitPosTaggerException;
 import com.github.oxaoo.mp4ru.exceptions.InitRussianParserException;
 import com.github.oxaoo.mp4ru.syntax.RussianParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /*
     Program arguments to run example:
@@ -83,12 +79,13 @@ public class Main {
         try {
             String resultParseFile = new RussianParser(classifierModel, treeTaggerHome, parserConfig)
                     .parseFromFile(textFilePath);
-            LOG.info("Successful parseFromFile! The result of parseFromFile is presented in the {} file.", resultParseFile);
+            LOG.info("Successful parse from file! The result is presented in the '{}'.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parseFromFile. Cause: {}", e.getMessage());
             e.printStackTrace();
         } catch (InitRussianParserException e) {
             LOG.error("Failed to initialize the Russian parser. Cause: {}", e.getMessage());
+            e.printStackTrace();
         }
     }
 }

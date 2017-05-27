@@ -3,6 +3,9 @@ package com.github.oxaoo.mp4ru.syntax.utils;
 import com.github.oxaoo.mp4ru.common.ResourceResolver;
 import com.github.oxaoo.mp4ru.exceptions.ReadInputTextException;
 import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;
+import org.apache.commons.io.FilenameUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.List;
@@ -13,13 +16,18 @@ import java.util.List;
  * @since 17.02.2017
  */
 public class ParserUtils {
+    private static final Logger LOG = LoggerFactory.getLogger(ParserUtils.class);
 
     public static String makeParseFilePath(String textFilePath) {
-        String parseFilePath = "text.parse";
-        if (textFilePath == null || textFilePath.isEmpty() || !textFilePath.contains(".")) return parseFilePath;
-        int pointId = textFilePath.lastIndexOf('.');
-        if (pointId < 0) return parseFilePath;
-        return textFilePath.substring(0, pointId) + ".parse";
+        try {
+            String absFilePath = new File(textFilePath).getCanonicalPath();
+            String fullPath = FilenameUtils.getFullPath(absFilePath);
+            String baseName = FilenameUtils.getBaseName(absFilePath);
+            return fullPath + baseName + ".parse";
+        } catch (IOException e) {
+            LOG.warn("Could not get the resulting path from the source path [{}].", textFilePath);
+        }
+        return "text.parse";
     }
 
     public static void writeParsedText(String fileName, List<String> strings) throws WriteToFileException {

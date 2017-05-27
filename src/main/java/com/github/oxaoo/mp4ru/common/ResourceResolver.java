@@ -2,11 +2,10 @@ package com.github.oxaoo.mp4ru.common;
 
 import com.github.oxaoo.mp4ru.exceptions.ResourceResolverException;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 
 /**
  * @author Alexander Kuleshov
@@ -15,19 +14,11 @@ import java.nio.file.Paths;
  */
 public class ResourceResolver {
     public static String getAbsolutePath(String resource) throws ResourceResolverException {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(resource);
-        if (url == null) throw new ResourceResolverException("Resource [" + resource + "] could not be found.");
         try {
-            return Paths.get(url.toURI()).toAbsolutePath().toString();
-        } catch (URISyntaxException e) {
-            throw new ResourceResolverException("Failed to get resource URI [" + url.toString() + "].", e);
+            return new File(resource).getCanonicalPath();
+        } catch (IOException e) {
+            throw new ResourceResolverException("Failed to get resource absolute path [" + resource + "].", e);
         }
-    }
-
-    public static URL getUrl(String resource) throws ResourceResolverException {
-        URL url = Thread.currentThread().getContextClassLoader().getResource(resource);
-        if (url == null) throw new ResourceResolverException("Resource [" + resource + "] could not be found.");
-        return url;
     }
 
     public static InputStreamReader getResourceAsStreamReader(String resource) throws ResourceResolverException {

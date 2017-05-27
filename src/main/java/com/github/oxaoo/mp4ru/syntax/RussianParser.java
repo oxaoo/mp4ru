@@ -1,5 +1,6 @@
 package com.github.oxaoo.mp4ru.syntax;
 
+import com.github.oxaoo.mp4ru.common.ResourceResolver;
 import com.github.oxaoo.mp4ru.exceptions.*;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
@@ -8,9 +9,12 @@ import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
 import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
 import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +38,6 @@ public class RussianParser {
      * @param treeTaggerHome      the tree tagger home (*\bin\)
      * @param parserConfigPath    the parser config path (*.mco)
      */
-    @Deprecated
     public RussianParser(String classifierModelPath, String treeTaggerHome, String parserConfigPath)
             throws InitRussianParserException {
         try {
@@ -70,15 +73,12 @@ public class RussianParser {
      */
     public String parseFromFile(String textFilePath) throws FailedParsingException {
         try {
-            //prepare...
-            String text = ParserUtils.readText(textFilePath);
+            String text = FileUtils.readFileToString(new File(textFilePath), "UTF-8");
             String parseFilePath = ParserUtils.makeParseFilePath(textFilePath);
-
             List<String> parsedTokens = this.parse(text);
-
             ParserUtils.writeParsedText(parseFilePath, parsedTokens);
             return parseFilePath;
-        } catch (ReadInputTextException | WriteToFileException e) {
+        } catch (WriteToFileException | IOException e) {
             throw new FailedParsingException("Failed to parse the Russian text.", e);
         }
     }
