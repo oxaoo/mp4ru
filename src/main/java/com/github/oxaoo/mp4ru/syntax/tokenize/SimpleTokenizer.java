@@ -35,7 +35,7 @@ public class SimpleTokenizer implements Tokenizer {
         int prev = 0;
         while (cur != BreakIterator.DONE) {
             String token = text.substring(prev, cur);
-            if (token.replaceAll("[—«»\"`,‚„‘’“”%;:\\p{Z}\\uFEFF-\\uFFFF\\uFEFF]+", "").length() > 0)
+            if (token.replaceAll("[—«»\"`,‚„‘’“”%;:\\p{Z}\\uFEFF-\\uFFFF\\uFEFF\\u200E-\\u200F]+", "").length() > 0)
                 tokens.add(token);
             prev = cur;
             cur = bi.next();
