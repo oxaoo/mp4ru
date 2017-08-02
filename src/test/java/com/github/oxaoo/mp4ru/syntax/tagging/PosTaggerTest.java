@@ -40,4 +40,12 @@ public class PosTaggerTest {
         List<Conll> conlls = this.tagger.tagging(tokens, FragmentationType.NO_FRAGMENTATION);
         Assert.assertFalse(conlls.isEmpty());
     }
+
+    @Test
+    public void taggingTest2() throws IncorrectTokenException, ClassifierModelNotFoundException {
+        String text = "Политологи прогнозируют завинчивание гаек в качестве реакции властей Фото \u200B";
+        List<String> tokens = this.tokenizer.tokenization(text);
+        List<Conll> conlls = this.tagger.tagging(tokens, FragmentationType.NO_FRAGMENTATION);
+        Assert.assertFalse(conlls.isEmpty());
+    }
 }

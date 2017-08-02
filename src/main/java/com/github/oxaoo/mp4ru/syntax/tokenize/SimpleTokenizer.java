@@ -35,8 +35,9 @@ public class SimpleTokenizer implements Tokenizer {
         int prev = 0;
         while (cur != BreakIterator.DONE) {
             String token = text.substring(prev, cur);
-            if (token.replaceAll("[—«»\"`,‚„‘’“”%;:\\p{Z}\\uFEFF-\\uFFFF\\uFEFF\\u200E-\\u200F]+", "").length() > 0)
-                tokens.add(token);
+            String pureToken = token.replaceAll("[^\\p{IsCyrillic}\\w.!?]", "");
+            if (pureToken.length() > 0)
+                tokens.add(pureToken);
             prev = cur;
             cur = bi.next();
         }
