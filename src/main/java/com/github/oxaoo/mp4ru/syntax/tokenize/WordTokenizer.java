@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The simple tokenizer, breaking the text to the words.
+ * The word tokenizer, breaking the text to the words.
  *
  * @author Alexander Kuleshov
- * @version 0.1.0
+ * @version 0.2.0
  * @since 11.02.2017
  */
-public class SimpleTokenizer implements Tokenizer {
+public class WordTokenizer implements Tokenizer {
 
-    public SimpleTokenizer() {
+    public WordTokenizer() {
 
     }
 

@@ -1,16 +1,14 @@
 package com.github.oxaoo.mp4ru.syntax;
 
-import com.github.oxaoo.mp4ru.common.ResourceResolver;
 import com.github.oxaoo.mp4ru.exceptions.*;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
 import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
-import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
+import com.github.oxaoo.mp4ru.syntax.tokenize.WordTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
 import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +46,7 @@ public class RussianParser {
         } catch (InitSyntaxAnalyzerException e) {
             throw new InitRussianParserException("Error creating the Syntax Analyzer.", e);
         }
-        this.tokenizer = new SimpleTokenizer();
+        this.tokenizer = new WordTokenizer();
     }
 
     /**

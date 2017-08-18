@@ -4,7 +4,7 @@ import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
 import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
 import com.github.oxaoo.mp4ru.exceptions.InitPosTaggerException;
 import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
-import com.github.oxaoo.mp4ru.syntax.tokenize.SimpleTokenizer;
+import com.github.oxaoo.mp4ru.syntax.tokenize.WordTokenizer;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,14 +16,14 @@ import java.util.List;
  */
 public class PosTaggerTest {
     private PosTagger tagger;
-    private SimpleTokenizer tokenizer;
+    private WordTokenizer tokenizer;
 
 
     public PosTaggerTest() throws ClassifierModelNotFoundException, InitPosTaggerException, IOException {
         String classifierModel = "res/russian-utf8.par";
         String treeTaggerHome = "res/";
         this.tagger = new PosTagger(classifierModel, treeTaggerHome);
-        this.tokenizer = new SimpleTokenizer();
+        this.tokenizer = new WordTokenizer();
     }
 
     /**
