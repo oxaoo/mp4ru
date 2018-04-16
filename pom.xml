@@ -2,19 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+        <relativePath/>
+    </parent>
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru</artifactId>
     <packaging>pom</packaging>
     <version>0.2.0</version>
     <modules>
         <module>mp4ru-lib</module>
+        <module>mp4ru-service</module>
     </modules>
     <name>MaltParser for Russian</name>
 
     <properties>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maltparser.version>1.9.0</maltparser.version>
         <tt4j.version>1.2.1</tt4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -25,8 +34,14 @@
     </properties>
 
     <dependencyManagement>
-
         <dependencies>
+            <!-- Core -->
+            <dependency>
+                <groupId>com.github.oxaoo</groupId>
+                <artifactId>mp4ru-lib</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!-- Syntax Analyzer -->
             <dependency>
                 <groupId>org.maltparser</groupId>
@@ -122,6 +137,11 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.3.0.603</version>
             </plugin>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
         </plugins>
 
         <resources>
@@ -129,6 +149,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>log4j.properties</include>
+                    <include>**/*.properties</include>
                     <!--<include>res/**</include>-->
                 </includes>
                 <!--<excludes>
