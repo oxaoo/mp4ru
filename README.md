@@ -1,8 +1,8 @@
-# mp4ru
+# com.github.oxaoo.mp4ru
 MaltParser for Russian
 
-## What is mp4ru?
-The mp4ru is a parser for Russian language. 
+## What is com.github.oxaoo.mp4ru?
+The com.github.oxaoo.mp4ru is a parser for Russian language. 
 The parser is based on [MaltParser](http://www.maltparser.org/).
 
 ## How it works?
@@ -12,7 +12,7 @@ mvn clean install
 ```
 To run the program on the command line, execute the command:
 ```code
-java -jar mp4ru-0.1.0.jar -cm res/russian-utf8.par -tt res/ -pc res/russian.mco -tf res/text.txt
+java -jar com.github.oxaoo.mp4ru-0.1.0.jar -cm res/russian-utf8.par -tt res/ -pc res/russian.mco -tf res/text.txt
 ```
 Where *res* is a directory which contains resource files necessary for the parser.  
 * The argument *-cm* points to the path of classifier model for morphological analysis. 
@@ -28,7 +28,7 @@ The result of parsing is presented in the same file with the extension **.parse*
 
 For help use the following command:
 ```code
-java -jar mp4ru-0.1.0.jar -h
+java -jar com.github.oxaoo.mp4ru-0.1.0.jar -h
 ```
 For the correct program execution, the contents of the resource directory should look like this:
 ```code

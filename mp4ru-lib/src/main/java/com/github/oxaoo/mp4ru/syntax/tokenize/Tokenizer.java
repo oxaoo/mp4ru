@@ -1,7 +1,5 @@
 package com.github.oxaoo.mp4ru.syntax.tokenize;
 
-import com.github.oxaoo.mp4ru.exceptions.ReadInputTextException;
-
 import java.util.List;
 
 /**

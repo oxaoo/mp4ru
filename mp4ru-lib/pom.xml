@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>mp4ru</artifactId>
+        <groupId>com.github.oxaoo</groupId>
+        <version>0.2.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>mp4ru-lib</artifactId>
+    <packaging>jar</packaging>
+    <name>MaltParser for Russian Lib</name>
+
+    <dependencies>
+        <!-- Syntax Analyzer -->
+        <dependency>
+            <groupId>org.maltparser</groupId>
+            <artifactId>maltparser</artifactId>
+        </dependency>
+
+        <!-- Part-of-speech tagging (the wrapper of the TreeTagger) -->
+        <dependency>
+            <groupId>org.annolab.tt4j</groupId>
+            <artifactId>org.annolab.tt4j</artifactId>
+        </dependency>
+
+        <!-- IO -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
+        <!--Command line handler-->
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
