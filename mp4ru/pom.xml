@@ -2,28 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.6.RELEASE</version>
-        <relativePath/>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru</artifactId>
-    <packaging>pom</packaging>
     <version>0.2.0</version>
-    <modules>
-        <module>mp4ru-lib</module>
-        <module>mp4ru-service</module>
-    </modules>
+    <packaging>jar</packaging>
     <name>MaltParser for Russian</name>
 
     <properties>
         <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maltparser.version>1.9.0</maltparser.version>
         <tt4j.version>1.2.1</tt4j.version>
         <log4j.version>1.2.17</log4j.version>
@@ -33,71 +21,53 @@
         <junit.version>4.12</junit.version>
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <!-- Core -->
-            <dependency>
-                <groupId>com.github.oxaoo</groupId>
-                <artifactId>mp4ru-lib</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+    <dependencies>
+        <!-- Syntax Analyzer -->
+        <dependency>
+            <groupId>org.maltparser</groupId>
+            <artifactId>maltparser</artifactId>
+        </dependency>
 
-            <!-- Syntax Analyzer -->
-            <dependency>
-                <groupId>org.maltparser</groupId>
-                <artifactId>maltparser</artifactId>
-                <version>${maltparser.version}</version>
-            </dependency>
+        <!-- Part-of-speech tagging (the wrapper of the TreeTagger) -->
+        <dependency>
+            <groupId>org.annolab.tt4j</groupId>
+            <artifactId>org.annolab.tt4j</artifactId>
+        </dependency>
 
-            <!-- Part-of-speech tagging (the wrapper of the TreeTagger) -->
-            <dependency>
-                <groupId>org.annolab.tt4j</groupId>
-                <artifactId>org.annolab.tt4j</artifactId>
-                <version>${tt4j.version}</version>
-            </dependency>
+        <!-- IO -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
 
-            <!-- IO -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
+        <!-- Logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
 
-            <!-- Logging -->
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
 
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
+        <!--Command line handler-->
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+        </dependency>
 
-            <!--Command line handler-->
-            <dependency>
-                <groupId>com.beust</groupId>
-                <artifactId>jcommander</artifactId>
-                <version>${jcommander.version}</version>
-            </dependency>
-
-            <!-- Testing -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+        <!-- Testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -149,7 +119,6 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>log4j.properties</include>
-                    <include>**/*.properties</include>
                     <!--<include>res/**</include>-->
                 </includes>
                 <!--<excludes>

@@ -2,21 +2,35 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
-        <artifactId>mp4ru</artifactId>
-        <groupId>com.github.oxaoo</groupId>
-        <version>0.2.0</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-
+    <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru-service</artifactId>
+    <packaging>jar</packaging>
+    <name>MaltParser for Russian Service</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <tt4j.version>1.2.1</tt4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <junit.version>4.12</junit.version>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.github.oxaoo</groupId>
-            <artifactId>mp4ru-lib</artifactId>
+            <artifactId>mp4ru</artifactId>
+            <version>0.2.0</version>
         </dependency>
 
         <!-- Spring Boot -->
