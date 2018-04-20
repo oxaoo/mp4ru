@@ -62,7 +62,7 @@
         </dependency>
     </dependencies>
 
-    <build>
+    <!--<build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -84,7 +84,7 @@
                 </executions>
                 <configuration>
                     <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <!--<tag>${project.version}</tag>-->
+                    &lt;!&ndash;<tag>${project.version}</tag>&ndash;&gt;
                     <tag>0.1.0</tag>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <buildArgs>
@@ -93,15 +93,15 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 
-<!--    <distributionManagement>
-        <repository>
-            <id>docker-hub</id>
-            <name>Docker Hub</name>
-            <url>https://hub.docker.com/</url>
-        </repository>
-    </distributionManagement>-->
+    <!--    <distributionManagement>
+            <repository>
+                <id>docker-hub</id>
+                <name>Docker Hub</name>
+                <url>https://hub.docker.com/</url>
+            </repository>
+        </distributionManagement>-->
 
     <repositories>
         <repository>
