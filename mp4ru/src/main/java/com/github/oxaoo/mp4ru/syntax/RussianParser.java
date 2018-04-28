@@ -1,6 +1,6 @@
 package com.github.oxaoo.mp4ru.syntax;
 
-import com.github.oxaoo.mp4ru.exceptions.*;
+import com.github.oxaoo.mp4ru.exceptions.InitRussianParserException;
 import com.github.oxaoo.mp4ru.syntax.parse.SyntaxAnalyzer;
 import com.github.oxaoo.mp4ru.syntax.tagging.Conll;
 import com.github.oxaoo.mp4ru.syntax.tagging.PosTagger;
@@ -8,6 +8,13 @@ import com.github.oxaoo.mp4ru.syntax.tokenize.FragmentationType;
 import com.github.oxaoo.mp4ru.syntax.tokenize.WordTokenizer;
 import com.github.oxaoo.mp4ru.syntax.tokenize.Tokenizer;
 import com.github.oxaoo.mp4ru.syntax.utils.ParserUtils;
+import com.github.oxaoo.mp4ru.exceptions.ClassifierModelNotFoundException;
+import com.github.oxaoo.mp4ru.exceptions.FailedParsingException;
+import com.github.oxaoo.mp4ru.exceptions.IncorrectTokenException;
+import com.github.oxaoo.mp4ru.exceptions.InitPosTaggerException;
+import com.github.oxaoo.mp4ru.exceptions.InitSyntaxAnalyzerException;
+import com.github.oxaoo.mp4ru.exceptions.SyntaxAnalysisException;
+import com.github.oxaoo.mp4ru.exceptions.WriteToFileException;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,7 +173,7 @@ public class RussianParser {
      *
      * @param taggedTokens the tagged tokens
      * @return the list of parsed tokens
-     * @throws SyntaxAnalysisException     the syntax analysis exception
+     * @throws SyntaxAnalysisException     the com.github.oxaoo.mp4ru.syntax analysis exception
      */
     private List<String> analyze(List<Conll> taggedTokens) throws SyntaxAnalysisException {
         LOG.info("Parsing...");

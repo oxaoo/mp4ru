@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+  mp4ru-service:
+    build:
+      context: ./..
+      dockerfile: ./mp4ru-service/Dockerfile
+    image: oxaoo/mp4ru-service:1.0.0
+    container_name: mp4ru-service
+    hostname: mp4ru-service
+    ports:
+      - "2000:2000"
+      - "2001:2001"

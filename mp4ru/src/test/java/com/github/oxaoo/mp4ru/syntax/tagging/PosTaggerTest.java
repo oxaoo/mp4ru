@@ -11,17 +11,14 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * @author <a href="mailto:aleksandr.kuleshov@t-systems.ru">Alexander Kuleshov</a>
- */
 public class PosTaggerTest {
     private PosTagger tagger;
     private WordTokenizer tokenizer;
 
 
     public PosTaggerTest() throws ClassifierModelNotFoundException, InitPosTaggerException, IOException {
-        String classifierModel = "res/russian-utf8.par";
-        String treeTaggerHome = "res/";
+        String classifierModel = "../res/russian-utf8.par";
+        String treeTaggerHome = "../res/";
         this.tagger = new PosTagger(classifierModel, treeTaggerHome);
         this.tokenizer = new WordTokenizer();
     }
