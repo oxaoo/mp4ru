@@ -8,3 +8,4 @@ services:
 #        command: java -jar /opt/mp4ru/service/mp4ru-service-0.2.0.jar
     ports:
       - "2000:2000"
+      - "2001:2001"
