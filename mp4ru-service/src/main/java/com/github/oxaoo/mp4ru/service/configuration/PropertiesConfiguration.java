@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "mp4ru")
 public class PropertiesConfiguration {
-    private String workDir;
     private String classifierModelPath;
     private String treeTaggerPath;
     private String parserConfigurationPath;
