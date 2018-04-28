@@ -5,126 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.oxaoo</groupId>
-    <artifactId>mp4ru</artifactId>
-    <version>0.1.0</version>
-    <name>MaltParser for Russian</name>
+    <artifactId>mp4ru-root</artifactId>
+    <version>0.2.0</version>
+    <packaging>pom</packaging>
+    <name>MaltParser for Russian Root</name>
 
-    <properties>
-        <maltparser.version>1.9.0</maltparser.version>
-        <tt4j.version>1.2.1</tt4j.version>
-        <slf4j.version>1.7.21</slf4j.version>
-        <java.version>1.8</java.version>
-        <jcommander.version>1.60</jcommander.version>
-    </properties>
-
-    <dependencies>
-        <!-- Syntax Analyzer -->
-        <dependency>
-            <groupId>org.maltparser</groupId>
-            <artifactId>maltparser</artifactId>
-            <version>${maltparser.version}</version>
-        </dependency>
-
-        <!-- Part-of-speech tagging (the wrapper of the TreeTagger) -->
-        <dependency>
-            <groupId>org.annolab.tt4j</groupId>
-            <artifactId>org.annolab.tt4j</artifactId>
-            <version>${tt4j.version}</version>
-        </dependency>
-
-        <!-- IO -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-
-        <!--Command line handler-->
-        <dependency>
-            <groupId>com.beust</groupId>
-            <artifactId>jcommander</artifactId>
-            <version>${jcommander.version}</version>
-        </dependency>
-
-        <!-- Testing -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-    </dependencies>
-
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.github.oxaoo.mp4ru.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.3.0.603</version>
-            </plugin>
-        </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>log4j.properties</include>
-                    <!--<include>res/**</include>-->
-                </includes>
-                <!--<excludes>
-                    <exclude>**/*</exclude>
-                </excludes>-->
-            </resource>
-        </resources>
-    </build>
+    <modules>
+        <module>mp4ru</module>
+        <module>mp4ru-service</module>
+    </modules>
 
 </project>
