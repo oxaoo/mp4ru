@@ -1,0 +1,269 @@
+{
+	"info": {
+		"name": "mp4ru-service",
+		"_postman_id": "5eccbabe-c02c-2f58-d58a-96fe74e9a001",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET parse",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:2000/parse?text=Привет, как дела?",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"parse"
+					],
+					"query": [
+						{
+							"key": "text",
+							"value": "Привет, как дела?",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "194d71f9-8913-455e-8c16-247531826044",
+					"name": "Response of GET parse",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:2000/parse?text=Привет, как дела?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2000",
+							"path": [
+								"parse"
+							],
+							"query": [
+								{
+									"key": "text",
+									"value": "Привет, как дела?",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Apr 2018 10:59:41 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 06:14:07 GMT+0300 (Russia TZ 2 Standard Time)",
+							"httpOnly": true,
+							"domain": "localhost",
+							"path": "/",
+							"secure": true,
+							"value": "CF41ED1805F5C8171E032687EC6FFEC9",
+							"key": "JSESSIONID"
+						}
+					],
+					"responseTime": 72,
+					"body": "[\"1\\tПривет\\tпривет\\tN\\tN\\tNcmsnn\\t0\\tROOT\\t_\\t_\",\"2\\tкак\\tкак\\tC\\tC\\tC\\t1\\tсравнит\\t_\\t_\",\"3\\tдела\\tдело\\tN\\tN\\tNcnpnn\\t2\\tсравн-союзн\\t_\\t_\",\"4\\t?\\t?\\tS\\tS\\tSENT\\t3\\tPUNC\\t_\\t_\"]"
+				}
+			]
+		},
+		{
+			"name": "POST parse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Привет, как дела?"
+				},
+				"url": {
+					"raw": "http://localhost:2000/parse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"parse"
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "17333574-7bd1-4f09-a620-e360afd2be6a",
+					"name": "Response of POST parse",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "Привет, как дела?"
+						},
+						"url": {
+							"raw": "http://localhost:2000/parse",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2000",
+							"path": [
+								"parse"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Apr 2018 11:00:16 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked",
+							"name": "Transfer-Encoding",
+							"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 06:14:07 GMT+0300 (Russia TZ 2 Standard Time)",
+							"httpOnly": true,
+							"domain": "localhost",
+							"path": "/",
+							"secure": true,
+							"value": "CF41ED1805F5C8171E032687EC6FFEC9",
+							"key": "JSESSIONID"
+						}
+					],
+					"responseTime": 52,
+					"body": "[\"1\\tПривет\\tпривет\\tN\\tN\\tNcmsnn\\t0\\tROOT\\t_\\t_\",\"2\\tкак\\tкак\\tC\\tC\\tC\\t1\\tсравнит\\t_\\t_\",\"3\\tдела\\tдело\\tN\\tN\\tNcnpnn\\t2\\tсравн-союзн\\t_\\t_\",\"4\\t?\\t?\\tS\\tS\\tSENT\\t3\\tPUNC\\t_\\t_\"]"
+				}
+			]
+		},
+		{
+			"name": "Health PING",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:2000/health/ping",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2000",
+					"path": [
+						"health",
+						"ping"
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "50bcb69b-6d7f-4aef-ac8d-272c5a896b09",
+					"name": "Respons of Health PING",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:2000/health/ping",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "2000",
+							"path": [
+								"health",
+								"ping"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"_postman_previewtype": "text",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "4",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 29 Apr 2018 11:00:49 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Tue Jan 19 2038 06:14:07 GMT+0300 (Russia TZ 2 Standard Time)",
+							"httpOnly": true,
+							"domain": "localhost",
+							"path": "/",
+							"secure": true,
+							"value": "CF41ED1805F5C8171E032687EC6FFEC9",
+							"key": "JSESSIONID"
+						}
+					],
+					"responseTime": 28,
+					"body": "pong"
+				}
+			]
+		}
+	]
+}

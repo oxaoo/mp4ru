@@ -17,7 +17,7 @@ import java.util.List;
  * The class represent the Part-of-Speech tagging.
  *
  * @author Alexander Kuleshov
- * @version 0.1.0
+ * @version 1.0.0
  * @since 12.02.2017
  */
 public class PosTagger {

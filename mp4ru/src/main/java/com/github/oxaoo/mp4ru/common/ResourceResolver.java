@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 
 /**
  * @author Alexander Kuleshov
- * @version 0.1.0
+ * @version 1.0.0
  * @since 01.04.2017
  */
 public class ResourceResolver {
