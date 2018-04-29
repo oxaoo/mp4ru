@@ -6,7 +6,7 @@
 
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru</artifactId>
-    <version>0.2.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>MaltParser for Russian</name>
 
@@ -127,11 +127,7 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>log4j.properties</include>
-                    <!--<include>res/**</include>-->
                 </includes>
-                <!--<excludes>
-                    <exclude>**/*</exclude>
-                </excludes>-->
             </resource>
         </resources>
     </build>

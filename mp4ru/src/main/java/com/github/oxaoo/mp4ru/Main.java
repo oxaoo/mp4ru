@@ -8,11 +8,12 @@ import com.github.oxaoo.mp4ru.syntax.RussianParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Paths;
-
 /*
     Program arguments to run example:
-    -cm mp4ru-lib/res/russian-utf8.par -tf mp4ru-lib/res/text.txt -tt mp4ru-lib/res/ -pc mp4ru-lib/res/russian.mco
+    -cm mp4ru-lib/res/russian-utf8.par
+    -tf mp4ru-lib/res/text.txt
+    -tt mp4ru-lib/res/
+    -pc mp4ru-lib/res/russian.mco
  */
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -47,14 +48,12 @@ public class Main {
 
     @Parameter(
             names = {"-h", "--help"},
-            description = "Information on use of the com.github.oxaoo.mp4ru",
+            description = "Information on use of the mp4ru",
             help = true)
     public boolean help = false;
 
 
     public static void main(String[] args) {
-        final String curDir = Paths.get(".").toAbsolutePath().normalize().toString();
-        LOG.info("Current directory: " + curDir);
         Main app = new Main();
         JCommander jcmd = new JCommander(app, args);
         if (app.help) {
@@ -76,9 +75,6 @@ public class Main {
             LOG.warn("Sorry, this feature is not yet supported.");
             return;
         }
-
-        String dir = System.getProperty("user.dir");
-        LOG.debug("Current dir: " + dir);
 
         try {
             String resultParseFile = new RussianParser(classifierModel, treeTaggerHome, parserConfig)

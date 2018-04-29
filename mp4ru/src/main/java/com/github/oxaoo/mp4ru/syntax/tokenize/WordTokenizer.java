@@ -9,7 +9,7 @@ import java.util.Locale;
  * The word tokenizer, breaking the text to the words.
  *
  * @author Alexander Kuleshov
- * @version 0.2.0
+ * @version 1.0.0
  * @since 11.02.2017
  */
 public class WordTokenizer implements Tokenizer {

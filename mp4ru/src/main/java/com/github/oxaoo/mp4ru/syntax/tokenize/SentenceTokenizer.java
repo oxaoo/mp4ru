@@ -8,7 +8,7 @@ import java.util.List;
  * The sentence tokenizer, breaking the text to the sentences.
  *
  * @author Alexander Kuleshov
- * @version 0.2.0
+ * @version 1.0.0
  * @since 18.08.2017
  */
 public class SentenceTokenizer implements Tokenizer {

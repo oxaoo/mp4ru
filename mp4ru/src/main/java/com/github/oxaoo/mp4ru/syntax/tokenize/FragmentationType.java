@@ -4,7 +4,7 @@ package com.github.oxaoo.mp4ru.syntax.tokenize;
  * The enum Tokenization type.
  *
  * @author Alexander Kuleshov
- * @version 0.1.0
+ * @version 1.0.0
  * @since 30.03.2017
  */
 public enum FragmentationType {
