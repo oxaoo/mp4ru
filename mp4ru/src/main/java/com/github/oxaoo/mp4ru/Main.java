@@ -5,15 +5,16 @@ import com.beust.jcommander.Parameter;
 import com.github.oxaoo.mp4ru.exceptions.FailedParsingException;
 import com.github.oxaoo.mp4ru.exceptions.InitRussianParserException;
 import com.github.oxaoo.mp4ru.syntax.RussianParser;
+import com.github.oxaoo.mp4ru.syntax.utils.RussianParserBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /*
     Program arguments to run example:
-    -cm mp4ru-lib/res/russian-utf8.par
-    -tf mp4ru-lib/res/text.txt
-    -tt mp4ru-lib/res/
-    -pc mp4ru-lib/res/russian.mco
+    -cm res/russian-utf8.par
+    -tf res/text.txt
+    -tt res/
+    -pc res/russian.mco
  */
 public class Main {
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -71,20 +72,24 @@ public class Main {
             return;
         }
 
-        if (commonSource != null) {
-            LOG.warn("Sorry, this feature is not yet supported.");
+        final RussianParser parser;
+        try {
+            if (this.commonSource != null) {
+                parser = RussianParserBuilder.build(this.commonSource);
+            } else {
+                parser = RussianParserBuilder.build(this.classifierModel, this.treeTaggerHome, this.parserConfig);
+            }
+        } catch (final InitRussianParserException e) {
+            LOG.error("Failed to initialize the Russian parser. Cause: {}", e.getMessage());
+            e.printStackTrace();
             return;
         }
 
         try {
-            String resultParseFile = new RussianParser(classifierModel, treeTaggerHome, parserConfig)
-                    .parseFromFile(textFilePath);
+            String resultParseFile = parser.parseFromFile(textFilePath);
             LOG.info("Successful parse from file! The result is presented in the '{}'.", resultParseFile);
         } catch (FailedParsingException e) {
             LOG.error("Exception during parseFromFile. Cause: {}", e.getMessage());
-            e.printStackTrace();
-        } catch (InitRussianParserException e) {
-            LOG.error("Failed to initialize the Russian parser. Cause: {}", e.getMessage());
             e.printStackTrace();
         }
     }

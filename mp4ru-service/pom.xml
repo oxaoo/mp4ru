@@ -14,7 +14,7 @@
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru-service</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>MaltParser for Russian Service</name>
 
     <properties>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.github.oxaoo</groupId>
             <artifactId>mp4ru</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- Spring Boot -->
