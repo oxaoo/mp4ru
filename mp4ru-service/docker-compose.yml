@@ -4,7 +4,7 @@ services:
     build:
       context: ./..
       dockerfile: ./mp4ru-service/Dockerfile
-    image: oxaoo/mp4ru-service:1.0.0
+    image: oxaoo/mp4ru-service:1.1.0
     container_name: mp4ru-service
     hostname: mp4ru-service
     ports:
