@@ -14,7 +14,7 @@
     <groupId>com.github.oxaoo</groupId>
     <artifactId>mp4ru-service</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>MaltParser for Russian Service</name>
 
     <properties>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>com.github.oxaoo</groupId>
             <artifactId>mp4ru</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <!-- Spring Boot -->
@@ -52,6 +52,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.9.8</version>
         </dependency>
 
         <dependency>
